@@ -1,4 +1,5 @@
 module.exports = {
+    base: 'package-docs',
     title: 'Chief',
     description: 'standardized project development and site control',
     serviceworker: true,
