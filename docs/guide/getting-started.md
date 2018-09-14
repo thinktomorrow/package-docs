@@ -106,7 +106,7 @@ At the following files you should change the locales to your desired setup:
 ## Project setup advice
 Following adjustments are not automatically enforced but are however recommended in your project.
 
-## MySQL index length
+### MySQL index length
 Add following snippet in the AppServiceProvider of your project if you use MySQL older than 5.7.7
 ref: https://laravel.com/docs/master/migrations#creating-indexes
 `Schema::defaultStringLength(191)`

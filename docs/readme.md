@@ -2,7 +2,7 @@
 home: true
 heroImage:
 actionText: Let's get you started →
-actionLink: /getting-started/
+actionLink: /guide/getting-started
 features:
 - title: Laravel Package
   details: Chief does not interfere with the site logic which allows you to be in full control. It can be added to your laravel project as a package during development.
