@@ -4,7 +4,8 @@ We use GTM to implement tags or analytics tracking without needing to change the
 
 ## Setup
 
-To get started create a property under a company account for the client or under the Think Tomorrow account.
+To get started we create a property under a company account for the client or under the Think Tomorrow account.
+
 Next we create a few basic variables to help out in our development.
 
 To make it easier for testing and to keep our tracking properties clean we set up a lookup table.
@@ -16,16 +17,21 @@ As input we choose 'Page Hostname'.
 
 Then we can start setting up the properties we want.
 As a basic setup we create a production property and link that to the live domain.
+
 A staging property can be set up if we want to test analytics implementations on the staging environment.
+
 You can define properties per locale if the situation calls for it.
-Lastly we advise to set up you local urls to a dummy analytics property to test if GTM passes the data as we would expect.
+
+Lastly we advise to set up your local urls to a dummy analytics property to test if GTM passes the data as we would expect.
 You can also set the default value to this dummy property.
 
 ![Lookup table](./img/lookuptable.png)
 
 To use this we need to create a 'Google Analytics settings' variable type and select the lookup table as tracking ID.
 
-Now that we have the lookup table as a GA variabel, we can link this variable to the tags that need the GA id.
+![Tracking id](./img/trackingid.png)
+
+Now that we have the lookup table as a GA variable, we can link this variable to the tags that need the GA id.
 
 ## Usage
 
@@ -48,6 +54,8 @@ This banner means your preview mode is activated for this GTM property.
 If we then browse to a site with this tag, we see the following debug bar.
 
 ![debug](./img/debug.png)
+
+After we checked all these changes we can publish the changes as a new version which then will be active on all the sites that implement this tag.
 
 ## Basic GA tracking
 
