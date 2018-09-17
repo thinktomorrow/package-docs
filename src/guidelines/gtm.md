@@ -97,5 +97,7 @@ More complex triggering is possible but these most often require some developer 
 ## Custom tags
 
 To implement pure html/js snippets like hotjar/smartlook/hubspot/etc we can create a tag for that as well.
+
 Create a new tag and select Custom HTML. 
-Input the custom tag here and select a trigger. Most often you will want this to trigger on every page but you may want to change this.
+
+Input the custom tag here and select a trigger. Most often you will want this to trigger on every page but you may want to change this based on your needs.
