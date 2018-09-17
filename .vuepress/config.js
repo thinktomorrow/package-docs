@@ -7,6 +7,7 @@ module.exports = {
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
+            { text: 'Guidelines', link: '/src/guidelines/index' },
             { 
                 text: 'Projects', 
                 items: [
@@ -19,7 +20,8 @@ module.exports = {
         sidebar:
         {
             '/src/chief/': require('./chief-nav.js'),
-            '/src/assetlibrary/': require('./assetlibrary-nav.js')
+            '/src/assetlibrary/': require('./assetlibrary-nav.js'),
+            '/src/guidelines/': require('./guidelines-nav.js')
         }
     }
 }
