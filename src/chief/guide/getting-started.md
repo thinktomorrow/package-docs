@@ -38,9 +38,9 @@ to avoid routes not being triggered. The PagesController is another file [you sh
 Also add a controller file for this front end route.
 This one is an example:
 
-```File: App\Http\Controller```
 ```php
-<?php
+# App/Http/Controller/PagesController.php
+
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -76,8 +76,9 @@ To get this route to work it's a good idea to add a view file where we can show 
 
 An example of this view file is the following:
 
-```File: resources\views\front\pages\show.blade.php```
 ```html
+<!-- resources\views\front\pages\show.blade.php -->
+
 @extends('front._layouts.master')
 
 @section('content')
@@ -129,8 +130,9 @@ Add following snippet in the AppServiceProvider of your project if you use MySQL
 ref: https://laravel.com/docs/master/migrations#creating-indexes
 `Schema::defaultStringLength(191)`
 
-```File: App\Providers\AppServiceProvider.php```
 ```php
+# App\Providers\AppServiceProvider.php
+
 use Illuminate\Support\Facades\Schema;
 
 /**

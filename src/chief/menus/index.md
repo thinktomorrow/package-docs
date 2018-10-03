@@ -5,8 +5,9 @@ Chief allows you to define multiple menus and manage them seperatly.
 
 To add a menu to chief we define one in the chief-setting config file.
 
-```File: Config\chief-settings.php```
 ```php
+# Config\chief-settings.php
+
 'menus' => [
         'main' => [
             'label' => 'Main navigation',

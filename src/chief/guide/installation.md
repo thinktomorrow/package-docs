@@ -15,8 +15,9 @@ Next edit the application exception handler to extend the chief exception handle
 The Chief Exception handler takes care of the admin authentication and authorization.
 In the `App\Exceptions\Handler` file extend the class as such:
 
-```File: App\Exceptions\Handler.php```
 ```php
+# App\Exceptions\Handler.php
+
 use Thinktomorrow\Chief\App\Exceptions\Handler as ChiefExceptionHandler;
 
 class Handler extends ChiefExceptionHandler
@@ -26,8 +27,9 @@ class Handler extends ChiefExceptionHandler
 Add the `AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file.
 You should place these in a `web-chief` middleware group like so:
 
-```File: App\Http\Kernel.php```
 ```php
+# App\Http\Kernel.php
+
 protected $middlewareGroups = [
     ...
     'web-chief' => [
@@ -39,8 +41,9 @@ protected $middlewareGroups = [
 
 Next in the same file we should add the following entries to the $routeMiddleware array.
 
-```File: App\Http\Kernel.php```
 ```php
+# App\Http\Kernel.php
+
 protected $routeMiddleware = [
     'auth.superadmin' => AuthenticateSuperadmin::class,
     'chief-guest' => \Thinktomorrow\Chief\App\Http\Middleware\ChiefRedirectIfAuthenticated::class,

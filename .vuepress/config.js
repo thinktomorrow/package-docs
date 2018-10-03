@@ -1,7 +1,7 @@
 module.exports = {
     base: '/package-docs/',
-    title: 'Chief',
-    description: 'standardized project development and site control',
+    title: 'Docs',
+    description: 'Think Tomorrow documentation and guidelines',
     serviceworker: true,
     dest: './docs',
     themeConfig: {
