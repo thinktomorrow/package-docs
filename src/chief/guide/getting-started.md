@@ -5,18 +5,36 @@ Chief is solely the back-end(admin panel). You will need to create the front-end
 To install chief we need to install it into another project.
 This can be either an existing one or a fresh Laravel 5.6+ project.
 
-## Default routes
-There is one project related route that is expected by chief and that is: `pages.show`. This
-is the route for the detail of a static page. Make sure to add this one. 
+## Routing
+There are two project related routes that are required by chief. 
 
-For the easiest setup you should also add the `pages.home` route. This will detect the homepage based on the config.
+| Routename        | description           |
+| ------------- |-------------|
+| pages.home      | Points to the Chief managed homepage. |
+| pages.show    | Catch all route for all managed Chief pages.      |
 
-```File: routes\front.php```
+So your route file should contain the following:
+
 ```php
+# routes/front.php
+
+// Homepage routing
 Route::get('/', PagesController::class.'@homepage')->name('pages.home');
-Route::get('page/{slug}', PagesController::class.'@show')->name('pages.show');
+
+// Catch all routing
+Route::get('{slug}', PagesController::class.'@show')->name('pages.show')->where('slug', '(.*)?');
+
 ```
 
+::: tip
+Catch all routing
+
+The catch-all `pages.show` route will point to a generic PagesController that directs the request
+to the proper published page. Place this routing at the end of your route definitions 
+to avoid routes not being triggered. The PagesController is another file [you should add to the project](#pagescontroller).
+:::
+
+## PagesController
 Also add a controller file for this front end route.
 This one is an example:
 
