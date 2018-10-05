@@ -30,27 +30,65 @@ To upload a file we call the addFile method on the model instance we want to att
 
 
 ```php
-$article = new Article;
-$article->addFile('file', 'type', 'locale', 'filename', 'keepOriginal');
+AssetTrait::addFile($file, $type, $locale, $filename, $keepOriginal);
 ```
 
-The file is required. The type, locale, filename and keepOriginal fields are optional.
-The file can be any file or an instance of Thinktomorrow\AssetLibrary\Models\Asset.
+### file `File|Thinktomorrow\AssetLibrary\Models\Asset`
+`required`
+
 The Thinktomorrow\AssetLibrary\Models\Asset upload is used to attach existing assets from the library to an existing model, and works exactly the same as uploading a file.
+
+### type `String`
+`optional`
 
 Type allows us to get a file based on the type for instance an article could have a banner but also a pdf file.
 Without type the library wouldn't be able to discern between them.
 This is explained in greater detail in the section about retrieving files.
+
+### locale `String`
+`optional`
+
+The locale should be a string matching one of the locales allows by you application. ie 'en', 'nl', etc
+
+### filename `String`
+`optional`
+
+The filename can be set to override the uploaded filename. Keep in mind that the filename will still be sluggified for safety.
+
+### keepOriginal `Boolean`
+`optional`
+
+The keepOriginal flag determines whether or not the original should be kept or removed.
 
 ## Upload an array/collection of files
 
 Uploading multiple files at once is done like this:
 
 ```php
-$article = new Article;
-$article->addFiles(['files'], 'type', 'locale', 'keepOriginal');
+AssetTrait::addFiles($files, $type, $locale, $keepOriginal);
 ```
 
+### files `Array|Collection`
+`required`
+
+The Thinktomorrow\AssetLibrary\Models\Asset upload is used to attach existing assets from the library to an existing model, and works exactly the same as uploading a file.
+
+### type `String`
+`optional`
+
+Type allows us to get a file based on the type for instance an article could have a banner but also a pdf file.
+Without type the library wouldn't be able to discern between them.
+This is explained in greater detail in the section about retrieving files.
+
+### locale `String`
+`optional`
+
+The locale should be a string matching one of the locales allows by you application. ie 'en', 'nl', etc
+
+### keepOriginal `Boolean`
+`optional`
+
+The keepOriginal flag determines whether or not the original should be kept or removed.
 As you can see there is no parameter for the filename. To pass along a filename you can key the array with the filename like so:
 
 ```php
@@ -59,7 +97,7 @@ $article->addFiles([
    'Image1.png' => Image,
    'Image2.png' => Image
 ],
-'type', 'locale', 'keepOriginal');
+$type, $locale, $keepOriginal);
 ```
 
 ## To the general library
@@ -67,10 +105,10 @@ $article->addFiles([
 If you don't want to attach a file to a model in the case of a medialibrary, this works as follows.
 
 ```php
-$asset = AssetUploader::upload('files', 'filename', 'keepOriginal');
+$asset = AssetUploader::upload($file, $filename, $keepOriginal);
 ```
 
-    A file not attached to a model doesn't have a type or locale since these fields are only relevant in the context of a model.
+A file not attached to a model doesn't have a type or locale since these fields are only relevant in the context of a model.
 
 ### Uploading a Base64 encoded image string
 
