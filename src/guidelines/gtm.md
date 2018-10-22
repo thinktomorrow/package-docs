@@ -109,3 +109,22 @@ To implement pure html/js snippets like hotjar/smartlook/hubspot/etc we can crea
 Create a new tag and select Custom HTML. 
 
 Input the custom tag here and select a trigger. Most often you will want this to trigger on every page but you may want to change this based on your needs.
+
+## Trigger on data-attributes
+
+It is also possible to trigger a click or anything really on a data- attribute you define yourself.
+Let me run you through how to set this up.
+
+First lets define a new variable of the type 'data-layer-variable'.
+
+Then as the name, and this is the key, we set 'gtm.element.dataset.' and than anything you want.
+For us this is 'gtm.element.dataset.event'.
+
+Now we can use this variable in every trigger to check whether this value is what we want to track.
+
+For instance: 
+If we want to track a button we can add 'data-event="buttonTrack"' on the button, try to make it as unique as possible.
+
+Next as the trigger we just select data-event from the dropdown and set the equals to 'buttonTrack'.
+
+![event](./img/dataEvent.png)
