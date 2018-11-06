@@ -2,13 +2,14 @@
 
 ### Preparing the model
 
-To upload files to a model we just need to add a trait to the model of our choosing and implement the HasMedia interface.
+To upload files to a model we just need to add a trait to the model of our choosing and implement the HasAsset interface.
 
 ```php
 use Illuminate\Database\Eloquent\Model;
 use Thinktomorrow\AssetLibrary\Traits\AssetTrait;
+use Thinktomorrow\AssetLibrary\Interfaces\HasAsset;
 
-class Article extends Model implements HasMedia
+class Article extends Model implements HasAsset
 {
    use AssetTrait;
 }
@@ -28,12 +29,11 @@ the previous step
 
 To upload a file we call the addFile method on the model instance we want to attach the file to.
 
-
 ```php
 AssetTrait::addFile($file, $type, $locale, $filename, $keepOriginal);
 ```
 
-### file `File|Thinktomorrow\AssetLibrary\Models\Asset`
+### file `UploadedFile|thinktomorrow\AssetLibrary\Models\Asset`
 `required`
 
 The Thinktomorrow\AssetLibrary\Models\Asset upload is used to attach existing assets from the library to an existing model, and works exactly the same as uploading a file.
@@ -45,12 +45,12 @@ Type allows us to get a file based on the type for instance an article could hav
 Without type the library wouldn't be able to discern between them.
 This is explained in greater detail in the section about retrieving files.
 
-### locale `String`
+### locale `String|null`
 `optional`
 
 The locale should be a string matching one of the locales allows by you application. ie 'en', 'nl', etc
 
-### filename `String`
+### filename `String|null`
 `optional`
 
 The filename can be set to override the uploaded filename. Keep in mind that the filename will still be sluggified for safety.
@@ -68,7 +68,7 @@ Uploading multiple files at once is done like this:
 AssetTrait::addFiles($files, $type, $locale, $keepOriginal);
 ```
 
-### files `Array|Collection`
+### files `Asset|Traversable|array|Collection|UploadedFile`
 `required`
 
 The Thinktomorrow\AssetLibrary\Models\Asset upload is used to attach existing assets from the library to an existing model, and works exactly the same as uploading a file.
@@ -80,7 +80,7 @@ Type allows us to get a file based on the type for instance an article could hav
 Without type the library wouldn't be able to discern between them.
 This is explained in greater detail in the section about retrieving files.
 
-### locale `String`
+### locale `String|null`
 `optional`
 
 The locale should be a string matching one of the locales allows by you application. ie 'en', 'nl', etc
@@ -102,7 +102,7 @@ $type, $locale, $keepOriginal);
 
 ## To the general library
 
-If you don't want to attach a file to a model in the case of a medialibrary, this works as follows.
+If you don't want to attach a file to a model in the case of a medialibrary, you can use the assetUploader class.
 
 ```php
 $asset = AssetUploader::upload($file, $filename, $keepOriginal);
@@ -120,7 +120,7 @@ Uploading a Base64 image is exactly the same as a normal file.
 
 ```php
 $article = new Article;
-$article->addFile('Base64EncodedImage', 'type', 'locale', 'filename', 'keepOriginal');
+$article->addFile($base64EncodedImage, $type, $locale, $filename, $keepOriginal);
 ```
 
 ### To the general library
@@ -128,7 +128,7 @@ $article->addFile('Base64EncodedImage', 'type', 'locale', 'filename', 'keepOrigi
 Uploading a Base64 image to the library uses a different method on the AssetUploader class:
 
 ```php
-$asset = AssetUploader::uploadFromBase64('file', 'filename', 'keepOriginal');
+$asset = AssetUploader::uploadFromBase64($base64EncodedImage, $filename, $keepOriginal);
 ```
 
 ## Retrieving a file

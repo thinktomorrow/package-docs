@@ -6,7 +6,8 @@ module.exports = [
         collapsable: true,
         children: utils.prefix('guide', [
             'installation',
-            'docs'
+            'docs',
+            'advanced'
         ]),
     },
 ]
