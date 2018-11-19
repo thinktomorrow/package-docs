@@ -128,3 +128,25 @@ If we want to track a button we can add 'data-event="buttonTrack"' on the button
 Next as the trigger we just select data-event from the dropdown and set the equals to 'buttonTrack'.
 
 ![event](./img/dataEvent.png)
+
+## Dynamic event setup
+
+Sometimes it can be easier to set up your events in the code instead of in GTM.
+One simple way to do this is to configure a dynamic event in GTM.
+
+First we create a 'data-layer variable' for each one of our event variables.
+So create a variable for the event action, category, description, label, value.
+
+![event](./img/datalayerVariable.png)
+
+
+The name you choose for these variables are the keys we will use in our datalayer to link our inputs to GTM.
+
+![event](./img/dynamicEvent.png)
+
+The last step is to add a trigger that listens to the event name. In this case that would be 'HubspotForm' but you can choose something more general or more specific as you prefer.
+
+![event](./img/dynamicEventTrigger.png)
+
+
+And that is it. Now we can push events to the datalayer and the GTM tags will capture and fire the events with the names you have defined in your code.
