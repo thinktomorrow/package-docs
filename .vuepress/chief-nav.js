@@ -47,4 +47,11 @@ module.exports = [
             ['#using-pagesets', 'Using pagesets'],
         ]),
     },
+    {
+        title: 'Fields',
+        collapsable: true,
+        children: utils.prefix('fields', [
+            ['#fields', 'fields'],
+        ]),
+    },
 ]
