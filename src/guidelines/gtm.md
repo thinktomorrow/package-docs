@@ -57,7 +57,7 @@ If we then browse to a site with this tag, we see the following debug bar.
 
 After we checked all these changes we can publish the changes as a new version which then will be active on all the sites that implement this tag.
 
-## Basic GA tracking
+## Basic pageview GA tracking
 
 Basic pageview tracking with GTM is very easy.
 
@@ -70,11 +70,26 @@ Basic pageview tracking with GTM is very easy.
 - create a page view trigger
 - select all pages
 
+## Custom JS/HTML tags
+
+To implement pure html/js snippets like hotjar/smartlook/hubspot/etc we can create a tag for that as well.
+
+Create a new tag and select Custom HTML. 
+
+Input the custom tag here and select a trigger. Most often you will want this to trigger on every page but you may want to change this based on your needs.
+
 ## GA event tracking
 
-Setting up basic event tracking as fairly easy using GTM.
+There are multiple ways to implement event tracking using GTM and analytics. 
+We list a few ways that we use the most here.
+### Basic event tracking
 
-Create a 'Google Analytics - Universal Analytics' tag.
+Setting up basic event tracking as fairly easy using GTM.
+We would use this way of tracking if the following applies:
+- don't have access or don't want to change the codebase
+- classes on the elements you want to track are unique enough
+
+If these are the case we can start by creating a 'Google Analytics - Universal Analytics' tag.
 Select 'Event' as the track type.
 
 Next you can fill in the tracking parameters.
@@ -102,15 +117,13 @@ Choose one of the following:
 
 More complex triggering is possible but these most often require some developer input.
 
-## Custom tags
+### Trigger on data-attributes
 
-To implement pure html/js snippets like hotjar/smartlook/hubspot/etc we can create a tag for that as well.
-
-Create a new tag and select Custom HTML. 
-
-Input the custom tag here and select a trigger. Most often you will want this to trigger on every page but you may want to change this based on your needs.
-
-## Trigger on data-attributes
+The second way is to use data-attributes in the codebase.
+We would use this way of tracking if the following applies:
+- have access to the codebase
+- classes on the elements you want to track are not unique enough
+- we need to trigger multiple events with predefined catagory/label/actions
 
 It is also possible to trigger a click or anything really on a data- attribute you define yourself.
 Let me run you through how to set this up.
@@ -129,7 +142,13 @@ Next as the trigger we just select data-event from the dropdown and set the equa
 
 ![event](./img/dataEvent.png)
 
-## Dynamic event setup
+### Dynamic event setup
+
+The thors way is to use a dynamic event which is filled through the data layer.
+We would use this way of tracking if the following applies:
+- have access to the codebase
+- classes on the elements you want to track are not unique enough
+- we need to trigger multiple events with dynamic category, label or action that we want to pass along from the code.
 
 Sometimes it can be easier to set up your events in the code instead of in GTM.
 One simple way to do this is to configure a dynamic event in GTM.
