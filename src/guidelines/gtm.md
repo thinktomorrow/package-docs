@@ -144,7 +144,7 @@ Next as the trigger we just select data-event from the dropdown and set the equa
 
 ### Dynamic event setup
 
-The thors way is to use a dynamic event which is filled through the data layer.
+The third way is to use a dynamic event which is filled through the data layer.
 We would use this way of tracking if the following applies:
 - have access to the codebase
 - classes on the elements you want to track are not unique enough
