@@ -10,6 +10,51 @@ module.exports = [
             'upgrade-guide',
             'local-dev',
             'faq',
+
+            /**
+             * Inhoudstafel idee:
+             * - First steps
+             *      - What is Chief
+             *      - installation
+             *      - upgrading
+             *      - Contributing
+             * - Model management
+             *      - Models and Managers
+             *      - Fields
+             *
+             * - Pages & Modules
+             *      - What is a page?
+             *      - Your first page setup
+             *      - Adding some content
+             *      - Adding a module
+             *      -
+             * - Advanced Model management
+             *      - Localization
+             *      - Tweaking the admin form
+             *      - custom routes (e.g. publish / archive)
+             * - Advanced Page management
+             *      - Using query sets on a page
+             *      - Using a snippet on a page
+             *
+             * - Site Management
+             *      - static text
+             *      -
+             * - Advanced Site management
+             *      - audit log
+             * - Users
+             *      - Invite an user
+             *      - Blocking an user
+             *      - Roles & Permissions
+             *      -
+             */
+        ]),
+    },
+    {
+        title: 'Model Management',
+        collapsable: true,
+        children: utils.prefix('model-management', [
+            ['#intro', 'Management basics'],
+            ['your-first-manager', 'Your first manager'],
         ]),
     },
     {
