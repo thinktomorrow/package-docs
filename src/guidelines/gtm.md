@@ -130,7 +130,7 @@ Let me run you through how to set this up.
 
 First lets define a new variable of the type 'data-layer-variable'.
 
-Then as the name, and this is the key, we set 'gtm.element.dataset.' and than anything you want.
+Then as the name, and this is the key, we set 'gtm.element.dataset.' and then anything you want.
 For us this is 'gtm.element.dataset.event'.
 
 Now we can use this variable in every trigger to check whether this value is what we want to track.
