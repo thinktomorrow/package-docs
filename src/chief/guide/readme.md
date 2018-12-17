@@ -4,11 +4,14 @@
 
 Pages in chief are exactly that. Pages. They have a front-end page, a url, etc.
 
+Pages can have a pagebuilder that lets you use predefined modules, sets and collections to build up your page.
+More about these types below.
+
 ### collections
 
 Every page has a collectiontype. This type determines which collection the page belongs to.
-One special collectiontype is "single" a page with the collectiontype single is a page that stands on its own.
-While a page with for instance the collection type "product" belongs to the products collection.
+One special collectiontype is "single". A page with the collectiontype "single" is a page that stands on its own.
+As opposed to a page with the collection type "product" which belongs to the products collection.
 
 ## modules
 
@@ -33,6 +36,13 @@ A set is a predefined subset of one or more managed models/pages/modules.
 
 ## static translations
 
+Any translation that doesn't belong to a page/model/etc. can be managed in the static translations.
+These can include stuff like validation errors, cookie bars, etc.
+
 ## menu
 
+There can be multiple menu's setup through chief, and for each menu you can add menu items that link to the different pages.
+
 ## pagebuilder
+
+The pagebuilder lets us build a page to our specifications by linking modules, pages, textblocks, etc.
