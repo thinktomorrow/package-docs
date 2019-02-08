@@ -3,6 +3,34 @@
 Chief is a package based site management system built on top of the laravel framework.
 Chief is the admin dashboard for your project. There are no assumptions made for the project site logic and structure.
 
+## Registration
+In the `app/Providers` folder add a file named `ChiefProjectServiceProvider`. This file can be used to register all your manageable models.
+An example of this is:
+
+```php
+namespace App\Providers;
+
+use Thinktomorrow\Chief\Pages\PageManager;
+use Thinktomorrow\Chief\App\Providers\ChiefProjectServiceProvider as BaseChiefProjectServiceProvider;
+
+class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
+{
+    public function boot()
+    {
+        // Boot core registrations
+        parent::boot();
+
+        // Example of registering event pages
+        $this->registerPage('events', PageManager::class, \App\Events\Event::class);
+    }
+}
+```
+
+Make sure to add this service provider to your `config/app.php` file:
+```php
+\App\Providers\ChiefProjectServiceProvider::class,
+```
+
 ## Chief routes
 
 There are two project routes required by chief: `pages.show` and `pages.home` which are the default routes for chief pages. 
