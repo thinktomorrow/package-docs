@@ -99,11 +99,4 @@ module.exports = [
             ['#fields', 'fields'],
         ]),
     },
-    {
-        title: '0.2',
-        collapsable: true,
-        children: utils.prefix('0.2', [
-            ['upgradeguide', 'Upgrade Guide'],
-        ]),
-    },
 ]

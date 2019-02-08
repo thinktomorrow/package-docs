@@ -1,4 +1,4 @@
-# Management basics
+# Basics
 
 ## Introduction
 In order to allow an administrator to manage the application, the content should be made controllable in the chief admin.

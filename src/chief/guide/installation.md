@@ -2,7 +2,8 @@
 # Installation
 
 ## Package
-Chief can be installed in a blank or existing laravel application. You install the package via composer.
+Chief is a laravel specific package. It can be installed in a fresh or existing laravel application. You install the latest version of the package via composer.
+Laravel version `5.7.1` is a minimum requirement.
 ```php
 composer require thinktomorrow/chief
 ```
@@ -24,7 +25,7 @@ class Handler extends ChiefExceptionHandler
 ```
 
 ### Middleware
-Add the `AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file.
+Add the `\Thinktomorrow\Chief\App\Http\Middleware\AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file.
 You should place these in a `web-chief` middleware group like so:
 
 ```php
@@ -45,7 +46,7 @@ Next in the same file we should add the following entries to the $routeMiddlewar
 # App\Http\Kernel.php
 
 protected $routeMiddleware = [
-    'auth.superadmin' => AuthenticateSuperadmin::class,
+    'auth.superadmin' => \Thinktomorrow\Chief\App\Http\Middleware\AuthenticateSuperadmin::class,
     'chief-guest' => \Thinktomorrow\Chief\App\Http\Middleware\ChiefRedirectIfAuthenticated::class,
     'chief-validate-invite' => \Thinktomorrow\Chief\App\Http\Middleware\ChiefValidateInvite::class,
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
@@ -53,6 +54,9 @@ protected $routeMiddleware = [
     ...
 ];
 ```
+
+From laravel version 5.7.19, there is a `App\Http\Middleware\Authenticate` middleware in the app folder which contains a predefined `login` route. This will break behaviour if you do not have a login route defined.
+In order to redirect non-logged users to the chief login page, you should change this named route to `chief.back.login`.
 
 ## Database setup
 
@@ -98,3 +102,8 @@ php artisan vendor:publish --tag=translatable
 // The thinktomorrow locale package
 php artisan vendor:publish --provider="Thinktomorrow\Locale\LocaleServiceProvider"
 ```
+
+## Known issues
+Chief has a few dependencies which may conflict with your current project dependencies. Chief makes use of the 
+`spatie/laravel-permission` package and this does expect only one permission based role system. So if your project
+requires the same package but for an second permission-based setup, you need to consider this possible conflict.

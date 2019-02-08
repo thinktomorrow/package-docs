@@ -1,42 +1,45 @@
-# Getting started
+# Project setup
 
-Chief is a package based cms built on top of the laravel framework.
-Chief is solely the back-end(admin panel). You will need to create the front-end yourself.
-To install chief we need to install it into another project.
-This can be either an existing one or a fresh Laravel 5.6+ project.
+Chief is a package based site management system built on top of the laravel framework.
+Chief is the admin dashboard for your project. There are no assumptions made for the project site logic and structure.
 
-## Routing
-There are two project related routes that are required by chief. 
+## Chief routes
+
+There are two project routes required by chief: `pages.show` and `pages.home` which are the default routes for chief pages. 
 
 | Routename        | description           |
 | ------------- |-------------|
 | pages.home      | Points to the Chief managed homepage. |
 | pages.show    | Catch all route for all managed Chief pages.      |
 
-So your route file should contain the following:
+The `pages.show` serves as a catch all for displaying all Chief managed pages.
+This catch-all route will point to a generic PagesController that directs the request
+to the proper published page. Place this routing at the end of your route definitions 
+to avoid routes not being triggered.
+
+`pages.home` makes the distinction with other pages that it is accessible on the root url.
+So in your route file you should add the following:
 
 ```php
-# routes/front.php
+# routes/web.php
 
-// Homepage routing
+// Homepage route
 Route::get('/', PagesController::class.'@homepage')->name('pages.home');
 
-// Catch all routing
+/**
+ * Catch all routing
+ *
+ * This catch-all will point to a generic chief pages controller that directs the request
+ * to the proper published page. It will handle the homepage '/' as well. Place this
+ * routing at the end of your route definitions to avoid routes not being triggered.
+ */
 Route::get('{slug}', PagesController::class.'@show')->name('pages.show')->where('slug', '(.*)?');
 
 ```
 
-::: tip
-Catch all routing
-
-The catch-all `pages.show` route will point to a generic PagesController that directs the request
-to the proper published page. Place this routing at the end of your route definitions 
-to avoid routes not being triggered. The PagesController is another file [you should add to the project](#pagescontroller).
-:::
-
-## PagesController
-Also add a controller file for this front end route.
-This one is an example:
+## Chief controller
+Besides the route definitions, we should add the following PagesController which will serve as the generic handler for all page requests.
+You are free to create your own logic or extend according to your project. You can use the following code as a starting point.
 
 ```php
 # App/Http/Controller/PagesController.php
@@ -44,6 +47,7 @@ This one is an example:
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Thinktomorrow\Chief\Pages\Homepage;
 use Thinktomorrow\Chief\Pages\Page;
 
 class PagesController extends Controller
@@ -54,8 +58,7 @@ class PagesController extends Controller
             throw new NotFoundHttpException('No published page found by slug ['.$slug.']');
         }
 
-        // TODO: If slug matches the homepage page, redirect to root to avoid duplicate content
-        if($page->isHomepage()) {
+        if(Homepage::is($page)) {
             return redirect()->route('pages.home');
         }
 
@@ -64,84 +67,32 @@ class PagesController extends Controller
 
     public function homepage()
     {
-        // Get the page that has the flag 'is_homepage'. Otherwise we take the first singles pages found. If not found, we take the first published page...
-        $page = Page::guessHomepage();
+        $page = Homepage::guess();
 
         return $page->view();
     }
 }
 ```
+## Chief view
+Next, we'll need a default view that is responsible for displaying all managed pages. You can choose either `views/pages/show.blade.php` or `views/front/pages/show.blade.php`.
+The one required method to render the chief content in the view is `Page::renderChildren()`. 
 
-To get this route to work it's a good idea to add a view file where we can show a page.
+So as a bare minimum the `pages.show` view should contain:
+```php
+# resources/views/pages/show.blade.php
 
-An example of this view file is the following:
-
-```html
-<!-- resources\views\front\pages\show.blade.php -->
-
-@extends('front._layouts.master')
-
-@section('content')
-
-    <!-- hero -->
-    <div class="row" style="background: url({{ $page->mediaUrl(\Thinktomorrow\Chief\Media\MediaType::HERO) }}) top right no-repeat;">
-        <div class="container">
-            <div class="column-7">
-                <h1>{{ $page->title }}</h1>
-                <div class="editor-content">
-                    {!! trans('pages.statics.hero.description') !!}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="container editor-content">
-        {!! $page->content !!}
-    </section>
-
-    {!! $page->renderChildren() !!}
-
-    <section class="container editor-content">
-        {!! $page->hero_title !!}
-        {!! $page->hero_description !!}
-    </section>
-
-@stop
+{!! $page->renderChildren() !!}
 ```
 
-Next to get the front-end to work you should set a homepage id in the chief-settings config file.
-This determines what the homepage/landing page will be. Currently this is changed through that config file.
-Eventually this will be editable in the admin.
+## Homepage
+Once you have added your pages, your should choose which one will be the homepage. This is currently set in the `thinktomorrow/chief-settings.php` config file.
+Here you can explicitly set the page that is considered to be the website homepage. If this homepage value is left empty, the first published page is used as a default.
 
-## Multilingual
-
-There are a couple of places where you need to configure the localisation of your application.
-At the following files you should change the locales to your desired setup:
-
-- Set the available locales of the application in the `config/translatable.php` file. The values in the `locales` array will be available for the admin to manage.
-- Set the frontend locales of the application in the `config/thinktomorrow/locale.php` file. The values in this `locales` array will be the allowed locales for the visitors of your application.
+## Localization
+When coding in Europe, you'll probably need to provide your site in more than one language. Localization is built into the core of Chief.
+In order to manage the locales, you need to configure the following files:
+- Set the available locales of the application in the `config/translatable.php` file. These are the locales in which each page should be made available.
+- Set the frontend locales of the application in the `config/thinktomorrow/locale.php` file. These locales are available for the users of your application.
 - Set the default and fallback locale in the `config/app.php` file. Keep in mind that this value needs to consist of one of the available locales as set in the `config/translatable.php`.
 
-## Project setup advice
-Following adjustments are not automatically enforced but are however recommended in your project.
-
-### MySQL index length
-Add following snippet in the AppServiceProvider of your project if you use MySQL older than 5.7.7
-ref: https://laravel.com/docs/master/migrations#creating-indexes
-`Schema::defaultStringLength(191)`
-
-```php
-# App\Providers\AppServiceProvider.php
-
-use Illuminate\Support\Facades\Schema;
-
-/**
- * Bootstrap any application services.
- *
- * @return void
- */
-public function boot()
-{
-    Schema::defaultStringLength(191);
-}
-```
+*Owkey looks like the basics are done and you are all set for kickstart your project development!*
