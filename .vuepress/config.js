@@ -13,6 +13,7 @@ module.exports = {
                 items: [
                     { text: 'Chief', link: '/src/chief/guide/installation' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/guide/installation' },
+                    { text: 'Project Skeleton', link: '/src/project-skeleton/index' },
                 ]
             },
             { text: 'Github', link: 'https://github.com/thinktomorrow/chief' },
@@ -21,7 +22,8 @@ module.exports = {
         {
             '/src/chief/': require('./chief-nav.js'),
             '/src/assetlibrary/': require('./assetlibrary-nav.js'),
-            '/src/guidelines/': require('./guidelines-nav.js')
+            '/src/guidelines/': require('./guidelines-nav.js'),
+            '/src/project-skeleton/': require('./project-skeleton-nav.js')
         }
     }
 }
