@@ -52,9 +52,10 @@ module.exports = [
     {
         title: 'Model Management',
         collapsable: true,
-        children: utils.prefix('model-management', [
-            ['#intro', 'Management basics'],
-            ['your-first-manager', 'Your first manager'],
+        children: utils.prefix('basics', [
+            'basics',
+            'fields',
+            'your-first-manager'
         ]),
     },
     {

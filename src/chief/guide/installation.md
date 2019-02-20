@@ -55,8 +55,10 @@ protected $routeMiddleware = [
 ];
 ```
 
-From laravel version 5.7.19, there is a `App\Http\Middleware\Authenticate` middleware in the app folder which contains a predefined `login` route. This will break behaviour if you do not have a login route defined.
+From laravel version 5.7.19, there is an `App\Http\Middleware\Authenticate` middleware in the app folder which contains a predefined `login` route. This will break behaviour if you do not have a login route defined.
 In order to redirect non-logged users to the chief login page, you should change this named route to `chief.back.login`.
+If you have upgraded your project from an older version of Laravel you might not have this file.
+Make sure you add this file: [Authenticate.php](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/Authenticate.php)
 
 ## Database setup
 
