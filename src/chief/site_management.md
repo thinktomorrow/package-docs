@@ -1,7 +1,10 @@
-# Menus
+# Site Management
+
+## Menus
+
 Chief allows you to define multiple menus and manage them seperatly.
 
-## Creating a menu
+### Creating a menu
 
 To add a menu to chief we define one in the chief config file.
 
@@ -22,7 +25,7 @@ To add a menu to chief we define one in the chief config file.
 
 Define the name of the menu and a label and the corresponding view file.
 
-## Using the menu
+### Using the menu
 
 To start using the menus you have defined you can use the following handler to define where to render the menu.
 
@@ -49,6 +52,8 @@ And then loop over the children to get each child. Deeper levels may be availabl
 @endif
 ```
 
-## Creating menu items
+### Creating menu items
 
 Now you can go ahead and use the admin panel to manage the menu items for the menus you have defined and set up.
+
+## Static Texts
