@@ -3,6 +3,61 @@
 ## What is a page?
 
 ## Your first page setup
+
+The easy setup for a page is to create a model that extends the chief page class
+
+```php
+use Thinktomorrow\Chief\Pages\Page;
+
+class FaqPage extends Page
+```
+
+The next step is to link the manager.
+
+Linking the models to their managers is done in the ChiefProjectServiceProvider.
+
+For convenience there is a default PageManager and ModuleManager.
+We'll come back to creating our own managers in de advanced management section.
+
+So linking our FaqPage would go as follows:
+
+```php
+$this->registerPage('faq', PageManager::class, FaqPage::class);
+```
+
+While we're in the ChiefProjectServiceProvider file we might as well set up our morphMap:
+
+```php
+Relation::morphMap(
+    [
+        'faq' => FaqPage::class
+    ]
+);
+```
+We do this mapping so we don't have to access the class by it's full path, in code or in DB.
+
+## Defining the view
+
+There are a couple places we can put the view file for a page.
+They will be used in order and will use the first one that exists.
+The order is as follows:
+
+```
+'front/PAGE_MORPHKEY/show'
+'front/pages/PAGE_MORPHKEY/show'
+'front/pages/show'
+'pages/show'
+```
+
+So for instance for the FaqPage we set up in the previous section the views it searches are:
+
+```
+'front/faq/show'
+'front/pages/faq/show'
+'front/pages/show'
+'pages/show'
+```
+
 ## Adding some content
 
 
@@ -83,8 +138,29 @@ We can get the title, content, and if we have media files attached we can retrie
 </div>
 ```
 
+## Defining the view
+
+There are a couple places we can put the view file for a page.
+They will be used in order and will use the first one that exists.
+The order is as follows:
+
+```
+'front/modules/PARENT_MORPHKEY/PAGE_MORPHKEY'
+'front/modules/PAGE_MORPHKEY'
+'modules/PARENT_MORPHKEY/PAGE_MORPHKEY'
+'modules/PAGE_MORPHKEY'
+```
+
+So for instance lets imagine a module 'contact' we want to style for the 'FaqPage' the views are as follows:
+
+```
+'front/modules/faq/contact'
+'front/modules/contact'
+'modules/faq/contact'
+'modules/contact'
+```
+
+
 ### Using Modules
 Once this setup is done we can create instances of these modules from the admin panel.
 And following that to add them to a page, simple select them from the pagebuilder dropdown.
-
-## Adding a module

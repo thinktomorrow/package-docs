@@ -1,5 +1,15 @@
 # Advanced Page Management
 
+## Grouping pages in the pagebuilder
+
+One of the ways to group pages together is to add them to the pagebuilder next to eachother.
+These pages will be grouped and the view can be customized by creating a view in the modules folder with the name of the type of page.
+For instance, lets take a page called product. We can make multiple product pages.
+Now if we want to show 3 products on the homepage we can add those products in the pagebuilder and if we have a view 'modules/product.blade.php'
+that view will be used to render those items.
+
+To get this working properly make sure you filename is the same as the key you defined that page as in the Chief.php config file.
+
 ## Using query sets
 
 A pageset is a collection of pages that can be added to a page as a module. 

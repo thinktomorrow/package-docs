@@ -19,7 +19,7 @@ module.exports = {
             { 
                 text: 'Projects', 
                 items: [
-                    { text: 'Chief', link: '/src/chief/guide/installation' },
+                    { text: 'Chief', link: '/src/chief/first_steps' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/guide/installation' },
                 ]
             },
