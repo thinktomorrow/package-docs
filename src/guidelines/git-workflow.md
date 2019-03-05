@@ -42,7 +42,9 @@ Event better and more descriptive:
 After a feature or has been developed, a pull request should be created on github. This sets the feature up for review. 
 At least one of the other projectteam members should revise your code. It is preferred for the reviewer to pull
 the branch locally and inspect and verify the feature within a working application. Communication around the 
-PR is done via Github in the PR conversation tab. 
+PR is done via Github in the PR conversation tab. If the reviewer notices bugs/improvements/etc he/she should comment on 
+the PR with their findings. The reviewer should not go in and fix this! They can however comment the improvements and 
+ask if they need to take care of this should they want to. 
 
 If this feature requires some special knowledge to test/merge it should be listed in the PR description. This includes stuff like:
 - run migrations
