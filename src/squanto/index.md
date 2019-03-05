@@ -58,3 +58,28 @@ Next you can import the existing translations from your lang files with the foll
 $ php artisan squanto:import
 ```
 If you run this command with the `-dry` option it will simulate the impact of the import first.
+
+## Advanced features
+
+If you want more control over the routing to the squanto pages you can override the `SquantoLineController` or `LineController`
+
+To use the management pages make sure you include the `SquantoManagerServiceProvider` in your config/app.php and the routes in your routes file:
+
+```php
+/**
+* -----------------------------------------------------------------
+* SQUANTO TRANSLATION ROUTES
+* -----------------------------------------------------------------
+*/
+// Developer access
+Route::get('translations/lines/create', ['as' => 'squanto.lines.create', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\LineController@create']);
+Route::delete('translations/lines/{id}', ['as' => 'squanto.lines.destroy', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\LineController@destroy']);
+Route::get('translations/lines/{id}/edit', ['as' => 'squanto.lines.edit', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\LineController@edit']);
+Route::put('translations/lines/{id}', ['as' => 'squanto.lines.update', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\LineController@update']);
+Route::post('translations/lines', ['as' => 'squanto.lines.store', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\LineController@store']);
+
+// Client access
+Route::get('translations/{id}/edit', ['as' => 'squanto.edit', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\TranslationController@edit']);
+Route::put('translations/{id}', ['as' => 'squanto.update', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\TranslationController@update']);
+Route::get('translations', ['as' => 'squanto.index', 'uses' => 'Thinktomorrow\Chief\App\Http\Controllers\Back\Translations\TranslationController@index']);
+```
