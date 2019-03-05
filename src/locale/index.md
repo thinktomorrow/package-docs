@@ -35,10 +35,10 @@ Localisation of your routes is done automatically when <a href="https://laravel.
 Creation of all named routes will be localized based on current locale. Quick non-obtrusive integration. 
 
 ``` php
-    route('pages.about'); // prints out http://example.com/en/about (if en is the active locale)
+route('pages.about'); // prints out http://example.com/en/about (if en is the active locale)
 ```
 
-To create an url with a specific locale other than the active one, you can use the `Thinktomorrow\Locale\LocaleUrl` class.
+To create an url with a specific locale other than the active one, you can use the localeroute helper.
 
 ``` php
 // Generate localized url from uri (resolves as laravel url() function)
@@ -48,7 +48,7 @@ localeroute('about','en'); // http://example.com/en/about
 localeroute('pages.about','en'); // http://example.com/en/about  
 
 // Add additional parameters as third parameter
-localeroute('products.show','en',['slug' => 'tablet'])); // http://example/en/products/tablet
+localeroute('products.show','en',['slug' => 'tablet']); // http://example/en/products/tablet
     
 ```
 
