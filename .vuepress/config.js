@@ -13,6 +13,7 @@ module.exports = {
                 items: [
                     { text: 'Chief', link: '/src/chief/guide/installation' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/guide/installation' },
+                    { text: 'Squanto', link: '/src/squanto/' },
                     { text: 'Locale', link: '/src/locale/' },
                 ]
             },
@@ -22,6 +23,7 @@ module.exports = {
         {
             '/src/chief/': require('./chief-nav.js'),
             '/src/assetlibrary/': require('./assetlibrary-nav.js'),
+            '/src/squanto/': require('./squanto-nav.js'),
             '/src/locale/': require('./locale-nav.js'),
             '/src/guidelines/': require('./guidelines-nav.js')
         }
