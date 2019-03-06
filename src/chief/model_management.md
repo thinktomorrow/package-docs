@@ -201,3 +201,56 @@ The radio field renders radiobuttons. This extends the selectfield so it has all
 The textfield is the same as the Html field except that this does not render as a wysiwyg editor.
 
 ### HasPeriod fields
+
+## Filters
+It is possible to add filtering on the admin index pages. Filters allow the administrator to query index results with custom behaviour.
+For example searching by title via a text input or selecting between published or drafted items. By default, there are no filters set on a manager. 
+
+Let's add some filtering.
+
+### Defining filters
+Filters are defined in the Manager class via the `filters` method. This returns a `Thinktomorrow\Chief\Filters\Filters` instance which acts as the filter collection:
+```php 
+use \Thinktomorrow\Chief\Filters\Filters;
+use \Thinktomorrow\Chief\Filters\Types\InputFilter;
+
+...
+
+public static function filters(): Filters
+{
+    return new Filters([
+        InputFilter::make('title')->label('search by title')->query(function($query){
+            return $query->where(function($query){
+                return $query->where('title','LIKE','%'.request()->input('title').'%');
+            });
+        }),
+    ]);
+}
+```
+
+
+This will add a search field in the sidebar of your index like so:
+
+![Filter example](./img/filter-example.png)
+
+### Input filter
+The input filter allows the user to query by textual input. A search field is a good use case. As shown in the example above, there are
+a couple of values to be set. 
+
+Create a filter with the `Filter::make(<key>)` method. The key parameter identifies the input name and will be used a query key in the uri.
+You can define the query to be run with the `Filter::query()` method. This expects a Closure which should return a query instance. 
+Since all active filter values are present in the request uri, you can fetch them from the `request()` object.
+
+Optionally you can add:
+`Filter::label()` to set a custom label. By default the input name is used.
+`Filter::description()` to add a small description below the field.
+
+### Select filter
+The select filter allows the user to choose between a set options. Here you should also set the options via a `SelectFilter::options()`.
+```php 
+SelectFilter::make('locale')
+    ->options(['nl','fr'])
+    ->query(function($query){
+        return $query->where('locale',[request()->input('locale')]);
+    });
+```
