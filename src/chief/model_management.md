@@ -212,45 +212,75 @@ Let's add some filtering.
 Filters are defined in the Manager class via the `filters` method. This returns a `Thinktomorrow\Chief\Filters\Filters` instance which acts as the filter collection:
 ```php 
 use \Thinktomorrow\Chief\Filters\Filters;
-use \Thinktomorrow\Chief\Filters\Types\InputFilter;
-
 ...
 
 public static function filters(): Filters
 {
     return new Filters([
-        InputFilter::make('title')->label('search by title')->query(function($query){
-            return $query->where(function($query){
-                return $query->where('title','LIKE','%'.request()->input('title').'%');
-            });
-        }),
+        LocaleFilter::class
     ]);
 }
 ```
 
+A Filter class should extend from the base `\Thinktomorrow\Chief\Filters\Filter` class and needs to define two methods: an `init()` which boots the filter instance and an `apply` function.
+Here's an example:
+
+```php
+
+use \Thinktomorrow\Chief\Filters\Filters;
+
+...
+class SearchFilter extends InputFilter
+{
+    public static function init()
+    {
+        return static::make('search');
+    }
+
+    public function apply($value = null): Closure
+    {
+        return function($query) use($value){
+            return $query->where('name','LIKE', '%'.$value.'%');
+        };
+    }
+}
+```
 
 This will add a search field in the sidebar of your index like so:
 
 ![Filter example](./img/filter-example.png)
 
+Optionally you can add:
+a `label` property to set a custom label. By default the input name is used.
+A `description` property to add a small description below the field.
+
+
 ### Input filter
 The input filter allows the user to query by textual input. A search field is a good use case. As shown in the example above, there are
 a couple of values to be set. 
 
-Create a filter with the `Filter::make(<key>)` method. The key parameter identifies the input name and will be used a query key in the uri.
-You can define the query to be run with the `Filter::query()` method. This expects a Closure which should return a query instance. 
-Since all active filter values are present in the request uri, you can fetch them from the `request()` object.
-
-Optionally you can add:
-`Filter::label()` to set a custom label. By default the input name is used.
-`Filter::description()` to add a small description below the field.
-
 ### Select filter
-The select filter allows the user to choose between a set options. Here you should also set the options via a `SelectFilter::options()`.
-```php 
-SelectFilter::make('locale')
-    ->options(['nl','fr'])
-    ->query(function($query){
-        return $query->where('locale',[request()->input('locale')]);
-    });
+The select filter allows the user to choose between a set options. Here you should also set the options via an `options` property.
+```php{8}
+use Closure;
+use Thinktomorrow\Chief\Filters\Types\SelectFilter;
+
+class LocaleFilter extends SelectFilter
+{
+    public $label = 'Language';
+
+    public $options = ['nl','fr'];
+
+    public static function init()
+    {
+        return static::make('language');
+    }
+
+    public function apply($value = null): Closure
+    {
+        return function($query) use($value){
+            return $query->whereIn('locale',[$value]);
+        };
+    }
+}
 ```
