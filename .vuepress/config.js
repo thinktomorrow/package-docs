@@ -2,16 +2,24 @@ module.exports = {
     base: '/package-docs/',
     title: 'Docs',
     description: 'Think Tomorrow documentation and guidelines',
-    serviceworker: true,
+    serviceWorker: {
+        updatePopup: true,
+        updatePopup: {
+            message: "New content is available.",
+            buttonText: "Refresh" 
+        }
+    },
     dest: './docs',
     themeConfig: {
+        displayAllHeaders: true,
+        lastUpdated: 'Last Updated',
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Guidelines', link: '/src/guidelines/index' },
             { 
                 text: 'Projects', 
                 items: [
-                    { text: 'Chief', link: '/src/chief/guide/installation' },
+                    { text: 'Chief', link: '/src/chief/first_steps' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/guide/installation' },
                     { text: 'Squanto', link: '/src/squanto/' },
                     { text: 'Locale', link: '/src/locale/' },
