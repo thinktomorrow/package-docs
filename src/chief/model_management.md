@@ -192,6 +192,11 @@ SelectField::make('pages')
             ->selected($pageId);
 ```
 
+::: warning
+Make sure you define the selected property.
+The first entry or none will be selected if you don't supply this.
+:::
+
 ### RadioField
 
 The radio field renders radiobuttons. This extends the selectfield so it has all its features but just a different identifier.
@@ -201,6 +206,20 @@ The radio field renders radiobuttons. This extends the selectfield so it has all
 The textfield is the same as the Html field except that this does not render as a wysiwyg editor.
 
 ### HasPeriod fields
+
+### Custom validation rules
+
+required-fallback-locale
+
+This validation rule can be added to a Field to make sure this field is required for the default locale.
+
+```php
+    InputField::make('title')
+        ->translatable($this->model->availableLocales())
+        ->validation('required-fallback-locale|max:200', [], [
+            'trans.'.config('app.fallback_locale').'.title' => 'Titel',
+        ]),
+```
 
 ## Filters
 It is possible to add filtering on the admin index pages. Filters allow the administrator to query index results with custom behaviour.

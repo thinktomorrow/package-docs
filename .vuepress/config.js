@@ -2,15 +2,12 @@ module.exports = {
     base: '/package-docs/',
     title: 'Docs',
     description: 'Think Tomorrow documentation and guidelines',
-    serviceWorker: {
-        updatePopup: true,
-        updatePopup: {
-            message: "New content is available.",
-            buttonText: "Refresh" 
-        }
-    },
+    serviceWorker: true,
     dest: './docs',
     themeConfig: {
+        serviceWorker: {
+            updatePopup: true,
+        },
         displayAllHeaders: true,
         lastUpdated: 'Last Updated',
         nav: [
