@@ -142,6 +142,11 @@ Next as the trigger we just select data-event from the dropdown and set the equa
 
 ![event](./img/dataEvent.png)
 
+::: warning
+When adding tracking on elements that are or contain svg's the click might not bubble up to the correct element.
+If you encounter this make sure to add `pointer-events:none;` to the svg and all sub-elements.
+:::
+
 ### Dynamic event setup
 
 The third way is to use a dynamic event which is filled through the data layer.
