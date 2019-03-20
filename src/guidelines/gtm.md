@@ -2,20 +2,51 @@
 
 We use GTM to implement tags or analytics tracking without needing to change the code every time.
 
-## Setup
+## Getting started
 
-To get started we create a property under a company account for the client or under the Think Tomorrow account.
+To get started with Tag manager go to [https://tagmanager.google.com/](https://tagmanager.google.com/) 
 
-Next we create a few basic variables to help out in our development.
+![Create Acount](./img/createAccount.png)
 
-To make it easier for testing and to keep our tracking properties clean we set up a lookup table.
+To create a new account, this is usually on company level, click the create account button at the top.
+
+![Create Container](./img/createContainer.png)
+
+If you already have an account you can click the create container button in the dropdown.
+
+Fill in the needed information and we're ready to get our Tag Manager started.
+
+Before we move on to adding tags we get a pop-up with our Tag Manager snippets.
+
+![GTM Snippet](./img/GTMSnippet.png)
+
+If you want you can add this to the website already or it's always accessible by clicking on your GTM ID on your dashboard.
+
+![Snippet Location](./img/SnippetLocation.png)
+
+## Initial Setup
+
+Welcome to your Workspace. It will look something like this.
+
+![Workspace](./img/Workspace.png)
+
+To make it easier for testing and to keep our tracking properties clean we use a lookup table.
 This lookup table will switch the Analytics id based on the current page hostname.
 This way we can split up our tracking on different properties for localization or just for testing.
 
-First we create a variable with the type 'lookup table'.
+So let's start of creating this variable. Go to the Variable tab and click the new button for user-defined variables.
+
+![create Variable](./img/createVariable.png)
+
+
+Next we click the big card to open the variable type selection. 
+In this sidebar scroll down a bit until you get to the utilities section. There we can select 'Lookup Table'.
+
+![create Lookup](./img/createLookup.png)
+
 As input we choose 'Page Hostname'.
 
-Then we can start setting up the properties we want.
+Next click 'Add Row' to start setting up the properties we want.
 As a basic setup we create a production property and link that to the live domain.
 
 A staging property can be set up if we want to test analytics implementations on the staging environment.
@@ -25,7 +56,11 @@ You can define properties per locale if the situation calls for it.
 Lastly we advise to set up your local urls to a dummy analytics property to test if GTM passes the data as we would expect.
 You can also set the default value to this dummy property.
 
+After this we end up with something like this:
 ![Lookup table](./img/lookuptable.png)
+
+
+### Using this new variable.
 
 To use this we need to create a 'Google Analytics settings' variable type and select the lookup table as tracking ID.
 

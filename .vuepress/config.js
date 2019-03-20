@@ -1,6 +1,6 @@
 module.exports = {
     base: '/package-docs/',
-    title: 'Docs',
+    title: 'Think Tomorrow Documentation',
     description: 'Think Tomorrow documentation and guidelines',
     serviceWorker: true,
     dest: './docs',
