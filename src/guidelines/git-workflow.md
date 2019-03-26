@@ -66,3 +66,13 @@ This involves the following procedure:
 - Feature branch is merged into master
 - master branch is deployed to production server.
 - visual confirmation of feature on production.
+
+## Cleanup local branches
+
+After a while of working on with this flow you will accumulate quite a few branches locally that no longer exist remotely.
+It can be quite bothersome to check and delete them one by one.
+
+The following command checks for local branches that no longer exist on the remote and removes them.
+It will not remove locale-only branches or branches that aren't fully merged.
+
+`git checkout master && git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d`

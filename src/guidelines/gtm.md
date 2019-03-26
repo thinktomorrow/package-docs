@@ -28,7 +28,7 @@ If you want you can add this to the website already or it's always accessible by
 
 Welcome to your Workspace. It will look something like this.
 
-![Workspace](./img/Workspace.png)
+![Workspace](./img/workspace.png)
 
 To make it easier for testing and to keep our tracking properties clean we use a lookup table.
 This lookup table will switch the Analytics id based on the current page hostname.
