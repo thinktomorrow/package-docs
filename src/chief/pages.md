@@ -68,9 +68,7 @@ class Article extends Page
 }
 ```
 
-All links will now start with this segment baked in. Here's how it looks for the admin:
-![](./img/base-segment.png)
-
+You can set an array in you need different segments for each locale. An array entry should hold the locale as key and the respective url segment as value.
 ```php
 class Article extends Page
 {
@@ -80,6 +78,9 @@ class Article extends Page
     ];
 }
 ```
+
+All links will now start with this segment baked in. Here's how it looks in the admin:
+![](./img/base-segment.png)
 
 ### Using a custom route resolver
 By default the `route()` helper is used for resolving page routes. You can change the way you resolve this route by defining a Closure in the boot method of your `ChiefProjectServiceProvider`. 
