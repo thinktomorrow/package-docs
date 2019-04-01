@@ -1,12 +1,10 @@
 var utils = require('./utilities.js');
 
 module.exports = [
-    ['first_steps', 'First Steps'],
-    ['model_management', 'Model Management'],
-    ['pages_modules', 'Pages & Modules'],
-    ['advanced_model_management', 'Advanced Model management'],
-    ['advanced_page_management', 'Advanced Page management'],
-    ['site_management', 'Site Management'],
-    ['advanced_site_management', 'Advanced Site management'],
+    ['initial_setup', 'Initial setup'],
+    ['pages', 'Pages'],
     ['users', 'Users'],
+    ['models', 'Models'],
+    ['advanced', 'Advanced setup'],
+    ['site_config', 'Site configuration'],
 ]
