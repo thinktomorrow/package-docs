@@ -57,7 +57,7 @@ If you like to use a different naming for the page routes, you can edit these in
 
 ### Customizing page urls
 The page url can be adjusted per page and per locale. This is something that is managed in the admin. 
-Slashes are allowed so, for example, _2019/our-job-offers_ is an exceptable link definition. 
+Slashes are allowed so, for example, _2019/our-job-offers_ is an acceptable link definition. 
 
 Since pages are divided by type (news, articles, tips, ...), it makes sence to also reflect this grouping in their url.
 You can set a predefined base url segment. This can be done by adding a `baseUrlSegment` property on your Page class.
