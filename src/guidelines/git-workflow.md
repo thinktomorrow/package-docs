@@ -69,7 +69,7 @@ This involves the following procedure:
 
 ## Cleanup local branches
 
-After a while of working on with this flow you will accumulate quite a few branches locally that no longer exist remotely.
+After a while of working with this flow you will accumulate quite a few branches locally that no longer exist remotely.
 It can be quite bothersome to check and delete them one by one.
 
 The following command checks for local branches that no longer exist on the remote and removes them.

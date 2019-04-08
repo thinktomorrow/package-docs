@@ -8,6 +8,7 @@ module.exports = {
         serviceWorker: {
             updatePopup: true,
         },
+        ga: 'UA-19842383-16',
         displayAllHeaders: false,
         lastUpdated: 'Last Updated',
         editLinks: true,
