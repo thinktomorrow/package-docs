@@ -14,7 +14,7 @@ The next step is to link the manager.
 
 Linking the models to their managers is done in the ChiefProjectServiceProvider.
 
-For convenience there is a default PageManager and ModuleManager.
+For convenience there is a default PageManager.
 We'll come back to creating our own managers in de advanced management section.
 
 So linking our FaqPage would go as follows:
@@ -136,7 +136,6 @@ To define the name of this module in the admin panel you can define the 'labelSi
 
 namespace Project\Modules;
 
-use Thinktomorrow\Chief\Common\Collections\CollectionDetails;
 use Thinktomorrow\Chief\Modules\Module;
 
 class Hero extends Module
@@ -146,37 +145,22 @@ class Hero extends Module
 }
 ```
 
-The next thing to do is to add a reference to this module in the chief.php config file.
+The next step is to link up a manager to make this module managable through the chief admin.
 
-You will most often define it in 2 places in this config file.
-You need to define the module in the collections array so the admin has knowledge of this new module.
-
-The second place might not always be needed. If we define the module in the relations>children array
-the module will be available to add to a page.
 
 ```php
-'relations'   => [
+<?php
 
-        'children' => [
-            \Thinktomorrow\Chief\Pages\Page::class,
-            
-            Hero::class,
-            ...
-        ],
-        ...
-    ],
+namespace Project\Modules;
 
-    /**
-     * Here you should provide the mapping of page and module collections. This
-     * is required for the class mapping from database to their respective classes.
-     */
-    'collections' => [
-        ...
-        // Modules
-        'heros'        => Hero::class,
-        ...
-    ],
+use Thinktomorrow\Chief\Modules\Module;
+
+class HeroManager extends ModuleManager
+{
+    
+}
 ```
+
 
 ### Customizing modules
 Next to the module model where we can set the names to be used, we can also customize the view that would be used.
@@ -226,3 +210,27 @@ So for instance lets imagine a module 'contact' we want to style for the 'FaqPag
 
 Once this setup is done we can create instances of these modules from the admin panel.
 And following that to add them to a page, simple select them from the pagebuilder dropdown.
+
+### Manager
+
+When you need more than just the pagebuilder and the title/content fields, you can create your own manager.
+
+If you wanted to create the faq's with questions and answers the manager could look something like this.
+
+```php
+class FaqManager extends PageManager
+{
+    public $labelSingular = 'Faq';
+    public $labelPlural   = 'Faqs';
+
+    public function fields(): Fields
+    {
+        return parent::fields()->add(
+            InputField::make('question'),
+            HtmlField::make('answer'),
+        );
+    }
+}
+```
+
+These fields have many more options and are explained in more detail in the [fields section](./models.md#fields).

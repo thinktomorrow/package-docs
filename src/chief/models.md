@@ -127,6 +127,14 @@ InputField::make('title')->translatable(['en', 'nl'])
                         ->description('Title to be used in the admin.'),
 ```
 
+:::tip 
+If you define a field as translatable you will have to override the `translatedAttributed` on the model so the translated field can be fetched.
+```
+protected $translatedAttributes = ['title', 'content', 'title_bg'];
+```
+In this case we added the title_bg field so we have to override all translated fields.
+:::
+
 ### DateField
 
 This field will allow you to add a date to the model.

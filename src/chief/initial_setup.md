@@ -65,6 +65,8 @@ Make sure you add this file: [Authenticate.php](https://github.com/laravel/larav
 The redirectTo function should end up looking like this:
 
 ```php {4}
+# App\Http\Middleware\Authenticate.php
+
 protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
@@ -94,10 +96,9 @@ The following vendor assets should also be published to your application:
 ```php
 // The dimsav translatable package
 php artisan vendor:publish --tag=translatable
-
-// The thinktomorrow locale package
-php artisan vendor:publish --provider="Thinktomorrow\Locale\LocaleServiceProvider"
 ```
+
+This will create the translatable config file `config/translatable.php`, this is where you edit what languages are available in the chief admin panel.
 
 ### Database setup
 
@@ -112,10 +113,10 @@ php artisan migrate
 ```
 
 Next we need at least one main admin user to login and start managing the admin panel.
-This command will create the basic roles and permissions and allows to setup the first admin account:
+This command will create the basic roles and permissions and allows to setup the first developer account:
 
 ```php
-php artisan chief:admin
+php artisan chief:developer
 ```
 
 ### Known issues
@@ -157,7 +158,6 @@ Make sure to add this service provider to your `config/app.php` file:
 
 Out of the box, there are two project routes required by chief: `pages.show` and `pages.home`. You can [change these](./pages.md#using-a-custom-route-resolver) if you'd need to.
 In your route file you should add the following:
-``
 ```php
 # routes/web.php
 
@@ -222,10 +222,16 @@ So as a bare minimum the `pages.show` view should contain:
 {!! $page->renderChildren() !!}
 ```
 
+### First page
+
+Now that all this setup is done, let's go to the chief admin panel and create our first page.
+Go to the `/admin` route and login with your newly created credentials to access the admin panel.
+
+Now let's click on pages in the navbar at the top and let's create our homepage.
 
 ### Homepage
 Once you have added your pages, you should choose which one will be the homepage. This is currently set in the `thinktomorrow/chief-settings.php` config file.
-Here you can explicitly set the page that is considered to be the website homepage. If this homepage value is left empty, the first published page is used as a default.
+Here you can explicitly set the page that is considered to be the website homepage. If this homepage value is left empty, the first **published** page is used as a default.
 
 ### Localization
 When coding in Europe, you'll probably need to provide your site in more than one language. Localization is built into the core of Chief.
@@ -234,7 +240,7 @@ In order to manage the locales, you need to configure the following files:
 - Set the frontend locales of the application in the `config/thinktomorrow/locale.php` file. These locales are available for the users of your application.
 - Set the default and fallback locale in the `config/app.php` file. Keep in mind that this value needs to consist of one of the available locales as set in the `config/translatable.php`.
 
-*Owkey looks like the basics are done and you are all set for kickstart your project development!*
+*Owkey looks like the basics are done and you are all set to kickstart your project development!*
 
 ## Upgrading
 

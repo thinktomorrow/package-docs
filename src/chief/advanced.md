@@ -16,26 +16,28 @@ A pageset is a collection of pages that can be added to a page as a module.
 In addition to this a pageset allows you to define query scopes.
 This lets you filter the collection by published or other query scopes as you see fit.
 
-### Creating pagesets
-To create a pageset you make a file in the src/Pagesets folder.
+### Creating sets
+A set is a custom grouping of pages, modules or other models.
+
+To create a set for a page you make a file in the src/Sets folder.
 
 ```php
 <?php
  namespace Thinktomorrow\Chief\Tests\Feature\PageSets;
  use Thinktomorrow\Chief\Pages\Page;
- use Thinktomorrow\Chief\PageSets\PageSet;
+ use Thinktomorrow\Chief\Sets\Set;
 
  class DummyPageSetRepository
 {
     public function all($limit = 100)
     {
         $pages = Page::limit($limit)->get();
-        return new PageSet($pages);
+        return new Set($pages);
     }
 } 
 ```
 
-The next thing to do is to add a reference to this pageset in the chief-settings.php config file.
+The next thing to do is to add a reference to this pageset in the chief.php config file.
 
 You need to define the pageset in the pagesets array so the admin-panel has knowledge of this new pageset.
 
@@ -57,11 +59,13 @@ If the label is defined this will be used as the name of this pageset in the adm
 ### Customizing pagesets
 To customize how a pageset renders we can also customize the view that would be used.
 
-To create a view for this specific module, we create views/front/modules/pageset.blade.php in this case.
-The name of the view should be the same as the pageset type as defined in the chief-assets config file.
+To create a view for this specific module, we create views/front/modules/published.blade.php in this case.
+The name of the view should be the same as the pageset type as defined in the chief config file.
 You can also put this file in a folder with the name of a page to define a view specificly for this page and pageset.
 
-In this view we have access to the $pages and $parent variable.
+In this view we have access to the following variables:
+- $pages and $parent for a set of pages.
+- $collection and $parent for a set of modules or models.
 
 ### Using Pagesets
 Once this setup is done we can create instances of these pagesets from the admin panel.
@@ -159,4 +163,3 @@ class LocaleFilter extends SelectFilter
     }
 }
 ```
-
