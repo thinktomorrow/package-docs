@@ -10,7 +10,6 @@ module.exports = {
         },
         displayAllHeaders: false,
         lastUpdated: 'Last Updated',
-        repo: 'thinktomorrow/package-docs',
         editLinks: true,
         editLinkText: 'Edit and improve this page.',
         nav: [
@@ -25,7 +24,8 @@ module.exports = {
                     { text: 'Locale', link: '/src/locale/' },
                 ]
             },
-            { text: 'Github', link: 'https://github.com/thinktomorrow/chief' },
+            { text: 'Chief Github', link: 'https://github.com/thinktomorrow/chief' },
+            { text: 'Docs Github', link: 'https://github.com/thinktomorrow/package-docs' },
         ],
         sidebar:
         {

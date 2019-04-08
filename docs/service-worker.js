@@ -21,7 +21,7 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.5.0/workbox
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "c52fd16d61797ba8fa4048cb615023b0"
+    "revision": "a578c8d470664a585ff5beff0397a18b"
   },
   {
     "url": "assets/css/0.styles.0f205980.css",
@@ -172,72 +172,72 @@ self.__precacheManifest = [
     "revision": "d817503934d88ed6efdc81417b6198b2"
   },
   {
-    "url": "assets/js/app.9376f4c6.js",
-    "revision": "7e78dff625494fbd3bc7c7cb5c6ab750"
+    "url": "assets/js/app.778803a3.js",
+    "revision": "c65a3ac8559369a47b0a6d0c39933cf5"
   },
   {
     "url": "contribute.html",
-    "revision": "c0484fbf245adf156278110dedf31216"
+    "revision": "464ee1b6c125c36c4f55ff1589231d30"
   },
   {
     "url": "index.html",
-    "revision": "9d28338db348a40352e98370370a2589"
+    "revision": "607b86203a2f8d050818fb7eada134de"
   },
   {
     "url": "src/assetlibrary/guide/docs.html",
-    "revision": "bf6143c7125385381f3b512c8ec32875"
+    "revision": "2142a8f11f564a6d58bb0831b794a7e8"
   },
   {
     "url": "src/assetlibrary/guide/installation.html",
-    "revision": "7e00cf0f6bcc8a365372838e98c17fa1"
+    "revision": "dce1ffff9a800dbedca36f47c62565cb"
   },
   {
     "url": "src/chief/advanced.html",
-    "revision": "8dba3f244637fe4c1e0e315d0fbf24d5"
+    "revision": "723b6411f049b89b2ac5406dfa81381f"
   },
   {
     "url": "src/chief/initial_setup.html",
-    "revision": "3f3e6c2232049b16b9d0aeb19ab5d3ef"
+    "revision": "ba211ab8b146e70ed6dd2f69027e1ef4"
   },
   {
     "url": "src/chief/models.html",
-    "revision": "f0bc04b5ac25897bc08dddda7aa95a01"
+    "revision": "e4a12b05e760e2276911608b6a7708ec"
   },
   {
     "url": "src/chief/pages.html",
-    "revision": "6018c4ee1da3f911b559806664eb59fa"
+    "revision": "3239802ec0c6ab25f83c280852541cac"
   },
   {
     "url": "src/chief/site_config.html",
-    "revision": "048553b1a71ca3ffb43671a11d8b097a"
+    "revision": "0fed389c3a595cdb35243da752a8838b"
   },
   {
     "url": "src/chief/users.html",
-    "revision": "4ad2936ded8acd08cce3512aa5098556"
+    "revision": "4a05b486474cadab0ca5a2f16e9d6b9c"
   },
   {
     "url": "src/guidelines/git-workflow.html",
-    "revision": "29aba37f8079e8b07d402b0b2ddb93c1"
+    "revision": "bed61e7c373353b3fdf42342ea7557c6"
   },
   {
     "url": "src/guidelines/gtm.html",
-    "revision": "dfe757aa88c0a47bc475d46ff466b1f0"
+    "revision": "b88a985fa91b09a25f44d2a5fd3dddd6"
   },
   {
     "url": "src/guidelines/index.html",
-    "revision": "452bffe5f5023f8e20d20b8205d63e7f"
+    "revision": "0e3baadeef7e30874fb1042b9a3c6742"
   },
   {
     "url": "src/guidelines/trello-workflow.html",
-    "revision": "efdbf1af7de479cf28eac93d38da5cae"
+    "revision": "f096fe4922fed7deef2f6632070061e5"
   },
   {
     "url": "src/locale/index.html",
-    "revision": "d13529ef4bb342b107303648d59ed987"
+    "revision": "ceb2bdac250166633d96a5ee2cb4a492"
   },
   {
     "url": "src/squanto/index.html",
-    "revision": "51f64f8ee9f973a6775452c20de7d9f0"
+    "revision": "3b739cdf7c0489384d0fd2b4220e6549"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
