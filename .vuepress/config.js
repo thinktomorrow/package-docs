@@ -4,6 +4,7 @@ module.exports = {
     description: 'Think Tomorrow documentation and guidelines',
     serviceWorker: true,
     dest: './docs',
+    ga: 'UA-19842383-16',
     themeConfig: {
         serviceWorker: {
             updatePopup: true,
