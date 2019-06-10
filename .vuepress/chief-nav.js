@@ -1,5 +1,3 @@
-var utils = require('./utilities.js');
-
 module.exports = [
     ['initial_setup', 'Initial setup'],
     ['pages', 'Pages'],

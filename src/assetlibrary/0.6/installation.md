@@ -28,7 +28,8 @@ Select the assetlibrary-config/assetlibrary-migrations to publish the config and
 
 | Laravel  | Assetlibrary  |
 |---|---|
-| 5.6-5.7  | 0.4  |
+| 5.8  | 0.6  |
+| 5.6-5.7  | 0.4-0.5  |
 | 5.5  | 0.3  |
 
 ## Features
