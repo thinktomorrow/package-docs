@@ -2,16 +2,19 @@
 
 We use GTM to implement tags or analytics tracking without needing to change the code every time.
 
-Follow these steps for a basic setup or use this gist and import our basic settings.
-You can download the .json here: [https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7](https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7)
+## Basic setup
 
-To import it follow the steps below to create an account and container. 
+You can use a gist for the basic GTM container setup or if you want to set up the container yourself start [here](#getting-started).
+
+To get started with the gist download the .json here: [https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7](https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7)
+
+Create a new container/account in GTM first.
 Then go to Admin in the top left and select import container.
 This is where you upload the .json.
 
 You can create a new workspace or import/merge it in the current workspace.
 
-To get started with this workspace set your analytics id in the 'lookup table' variable.
+Now the only thing to do is to set your analytics id in the 'lookup table' variable.
 
 For more explanation on the lookup table you can look [here](#initial-setup)
 
