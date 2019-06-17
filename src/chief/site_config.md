@@ -57,3 +57,45 @@ And then loop over the children to get each child. Deeper levels may be availabl
 Now you can go ahead and use the admin panel to manage the menu items for the menus you have defined and set up.
 
 ## Static Texts
+
+
+## Roles and Permissions
+
+Setting up roles and permissions we recommend creating a migration to create/link the required roles and permissions.
+An example what this migration could look like it the following:
+
+```php
+public function up()
+    {
+        $permissions = [
+            'view-form',
+            'delete-form'
+        ];
+
+        foreach($permissions as $permissionName)
+        {
+            Artisan::call('chief:permission', ['name' => $permissionName]);
+        }
+
+        DB::table('role_has_permissions')->truncate();
+
+        $this->roles()->each(function ($defaultPermissions, $roleName) {
+            Artisan::call('chief:role', ['name' => $roleName, '--permissions' => implode(',', $defaultPermissions)]);
+        });
+    }
+
+    public function roles(): Collection
+    {
+        return collect([
+
+            // full access, even to application logic stuff
+            'developer' => ['role', 'user', 'page', 'disable-user', 'update-you', 'squanto', 'view-audit', 'update-setting', 'view-form', 'delete-form'],
+
+            // Manages everything, including users
+            'admin' => ['view-page', 'update-page', 'delete-page', 'update-you', 'view-squanto', 'update-squanto', 'view-form'],
+
+            // Writes and edits content
+            'author' => ['view-page', 'update-page', 'update-you', 'view-squanto', 'update-squanto', 'view-form'],
+        ]);
+    }
+```
