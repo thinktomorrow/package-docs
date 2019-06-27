@@ -1,34 +1,59 @@
-# Initial setup
+# Installation
+Chief is a laravel package that adds a site management system to your project.
+Out of the box you'll get page, url and menu management provided a well-crafted admin ui. All of this with localization in mind.
+
+## Requirements
+There are a few minimum requirements for chief to be installable:
+- php >= 7.2.0
+- Laravel framework >= 5.6.39.
+
+:::warning Potential vendor conflict
+Chief makes use of the `spatie/laravel-permission` package. This does expect only one permission based role system. So this will present a conflict if your project
+already utilises the package for its own permissions.
+:::
 
 ## Installation
-Chief is a package based site management system built on top of the laravel framework.
-Chief is the admin dashboard for your project. There are no assumptions made for the project site logic and structure.
+Chief can be installed via composer.
 
-Chief is a laravel specific package. It can be installed in a fresh or existing laravel application. You install the latest version of the package via composer.
-Laravel version `5.7.1` is a minimum requirement.
 ```php 
 composer require thinktomorrow/chief
 ```
-The package will automatically register its service provider to hook into your application.
 
-### Application setup
+The package will automatically register its service provider but you'll need to set up a couple of elements to completely hook chief into your application:
 
-#### Exception handler
-Next edit the application exception handler to extend the chief exception handler.
-The Chief Exception handler takes care of the admin authentication and authorization.
-In the `App\Exceptions\Handler` file extend the class as such:
+1. [Migrations](#_1-migrations)
+2. [Exception handler](#_2-exception-handler)
+3. [Middleware](#_3-middleware)
+4. [Chief config](#_4-chief-config)
+5. [Chief assets](#_5-chief-assets)
+6. [First admin user](#_6-first-admin-user)
+
+### 1. Migrations
+
+Run the migrate artisan command. This will automatically run the chief migrations as well.
+```php
+php artisan migrate
+```
+
+
+### 2. Exception handler
+Your app's exception handler should extend `Thinktomorrow\Chief\App\Exceptions\Handler` since it takes care of all chief authentication and authorization.
+
+In the `app/Exceptions/Handler.php` file extend the handler class as such:
 
 ```php
-# App\Exceptions\Handler.php
+# app/Exceptions/Handler.php
 
 use Thinktomorrow\Chief\App\Exceptions\Handler as ChiefExceptionHandler;
 
 class Handler extends ChiefExceptionHandler
+{
+...
 ```
 
-#### Middleware
-Add the `\Thinktomorrow\Chief\App\Http\Middleware\AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file.
-You should place these in a `web-chief` middleware group like so:
+### 3. Middleware
+Add the `\Thinktomorrow\Chief\App\Http\Middleware\AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file
+in a `web-chief` middleware group:
 
 ```php{5-7}
 # App\Http\Kernel.php
@@ -42,7 +67,7 @@ protected $middlewareGroups = [
 ]
 ```
 
-Next in the same file we should add the following entries to the $routeMiddleware array.
+In the same file add the following middlewares to the $routeMiddleware array.
 
 ```php
 # App\Http\Kernel.php
@@ -57,14 +82,16 @@ protected $routeMiddleware = [
 ];
 ```
 
-From laravel version 5.7.19, there is an `App\Http\Middleware\Authenticate` middleware in the app folder which contains a predefined `login` route. This will break behaviour if you do not have a login route defined.
+::: warning Rename login routename to chief.back.login
+From laravel version 5.7.19, there is an `App\Http\Middleware\Authenticate` middleware in the app folder which contains a predefined `login` route. This will break behaviour in cases where you don't have a `login` routename defined.
 In order to redirect non-logged users to the chief login page, you should change this named route to `chief.back.login`.
+
 If you have upgraded your project from an older version of Laravel you might not have this file.
-Make sure you add this file: [Authenticate.php](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/Authenticate.php)
+Make sure to add it: [Authenticate.php](https://github.com/laravel/laravel/blob/master/app/Http/Middleware/Authenticate.php)
 
-The redirectTo function should end up looking like this:
+In this class there is a redirectTo function and it should end up looking like this:
 
-```php {4}
+```php {6}
 # App\Http\Middleware\Authenticate.php
 
 protected function redirectTo($request)
@@ -74,15 +101,9 @@ protected function redirectTo($request)
         }
     }
 ```
+:::
 
-### Config & Assets
-
-The next step is to publish the chief-assets to our public folder.
-If you want to overwrite existing files you can add the `--force` flag here.
-
-```php
-php artisan vendor:publish --tag=chief-assets
-```
+### 4. Chief config
 
 Publish the chief config to `config/thinktomorrow/chief` as this will require you to set some application defaults such as
 contact email and application name.
@@ -100,78 +121,47 @@ php artisan vendor:publish --tag=translatable
 
 This will create the translatable config file `config/translatable.php`, this is where you edit what languages are available in the chief admin panel.
 
-### Database setup
 
-Connect a database with your application and make sure you have set the proper database credentials in your `.env` file.
-
-Next perform the migrate artisan command. This will automatically run the chief migrations as well.
-Note that Chief has separate tables for the chief admin users, `chief-users` and `chief_password_resets`. This way there
-is no interference with your application user logic.
+### 5. Chief assets
+The next step is to publish the chief-assets to our public folder.
+If you want to overwrite existing files you can add the `--force` flag here.
 
 ```php
-php artisan migrate
+php artisan vendor:publish --tag=chief-assets
 ```
 
-Next we need at least one main admin user to login and start managing the admin panel.
-This command will create the basic roles and permissions and allows to setup the first developer account:
-
+### 6. First admin user
+By now your admin is ready to go. The only thing missing to access it is an admin user, so let's add one. Use the following command to
+add an admin account. Note that it also takes care of setting up the auth permissions and roles.
 ```php
-php artisan chief:developer
+php artisan chief:admin --dev
 ```
 
-### Known issues
-Chief has a few dependencies which may conflict with your current project dependencies. Chief makes use of the 
-`spatie/laravel-permission` package and this does expect only one permission based role system. So if your project
-requires the same package but for a second permission-based setup, you need to consider this possible conflict.
+Now that all this setup is done, let's go to the chief admin panel to get your first glance on the admin.
+Go to the `/admin` route and login with your newly created credentials to access the admin panel.
 
-## Getting Started
 
-### Registration
-In the `app/Providers` folder add a file named `ChiefProjectServiceProvider`. This file can be used to register all your manageable models.
-An example of this is:
 
-```php
-namespace App\Providers;
-
-use Thinktomorrow\Chief\Pages\PageManager;
-use Thinktomorrow\Chief\App\Providers\ChiefProjectServiceProvider as BaseChiefProjectServiceProvider;
-
-class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
-{
-    public function boot()
-    {
-        // Boot core registrations
-        parent::boot();
-
-        // Example of registering event pages
-        $this->registerPage('events', PageManager::class, \App\Events\Event::class);
-    }
-}
-```
-
-Make sure to add this service provider to your `config/app.php` file:
-```php
-\App\Providers\ChiefProjectServiceProvider::class,
-```
-
-### Define chief routes
+## Connecting the site
+For Chief to be able to render the admin pages, we need some routing work to be set up.
 
 Out of the box, there are two project routes required by chief: `pages.show` and `pages.home`. You can [change these](./pages.md#using-a-custom-route-resolver) if you'd need to.
 In your route file you should add the following:
 ```php
 # routes/web.php
 
-// Homepage route
-Route::get('/', PagesController::class.'@homepage')->name('pages.home');
+use \Thinktomorrow\Chief\Urls\ChiefResponse;
 
 /**
- * Catch all routing
+ * Catch all Chief routing
  *
- * This catch-all will point to a generic chief pages controller that directs the request
- * to the proper published page. It will handle the homepage '/' as well. Place this
- * routing at the end of your route definitions to avoid routes not being triggered.
+ * This catch-all will point to a generic chief response handler that answers the request
+ * with the proper published model and view. It will handle the homepage '/' as well.
+ * Place this at the end of the route file to ensure other routes are being found.
  */
-Route::get('{slug}', PagesController::class.'@show')->name('pages.show')->where('slug', '(.*)?');
+Route::get('{slug?}', function($slug = '/'){
+    return ChiefResponse::fromSlug($slug);
+})->name('pages.show')->where('slug', '(.*)?');
 
 ```
 
@@ -213,7 +203,7 @@ class PagesController extends Controller
 ```
 ### Chief view
 Next, we'll need a default view that is responsible for displaying all managed pages. You can choose either `views/pages/show.blade.php` or `views/front/pages/show.blade.php`.
-The one required method to render the chief content in the view is `$page->renderChildren()`. 
+The one required method to render the chief content in the view is `$page->renderChildren()`.
 
 So as a bare minimum the `pages.show` view should contain:
 ```php
@@ -222,10 +212,36 @@ So as a bare minimum the `pages.show` view should contain:
 {!! $page->renderChildren() !!}
 ```
 
-### First page
+### Registration
+In the `app/Providers` folder add a file named `ChiefProjectServiceProvider`. This file can be used to register all your manageable models.
+An example of this is:
 
-Now that all this setup is done, let's go to the chief admin panel and create our first page.
-Go to the `/admin` route and login with your newly created credentials to access the admin panel.
+```php
+namespace App\Providers;
+
+use Thinktomorrow\Chief\Pages\PageManager;
+use Thinktomorrow\Chief\App\Providers\ChiefProjectServiceProvider as BaseChiefProjectServiceProvider;
+
+class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
+{
+    public function boot()
+    {
+        // Boot core registrations
+        parent::boot();
+
+        // Example of registering event pages
+        $this->registerPage('events', PageManager::class, \App\Events\Event::class);
+    }
+}
+```
+
+Make sure to add this service provider to your `config/app.php` file:
+```php
+\App\Providers\ChiefProjectServiceProvider::class,
+```
+
+
+### First page
 
 Now let's click on pages in the navbar at the top and let's create our homepage.
 
@@ -243,99 +259,11 @@ In order to manage the locales, you need to configure the following files:
 *Owkey looks like the basics are done and you are all set to kickstart your project development!*
 
 ## Upgrading
-
-The latest version of Chief is `0.2.*` which is the one being currently developed upon. 
-Please note that the `0.1` release is only maintained for security fixes and critical bugfixes.
-
-### Updating chief inside your project
-Chief follows the semantic versioning and we always try to maintain a backward compatible release cycle. 
-The major version will include breaking changes and features that are not backward compatible. For each major version, we will
-provide an upgrade guide to make this process as painless as possible.
-The minor version will contain new features or deprecations that are still backward compatible.
-The patch version is used for bugfixes and is safe to update in your current chief version. 
-
-First run the `composer update thinktomorrow/chief` command. This will update Chief to the latest version, according to your version constraints.
-
-Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root. This will update all style and script assets.
-
-### Upgrading a project from 0.1.* to 0.2.*
-
-The upgrade from 0.1 to 0.2 is not considered an official upgrade. This is because the `0.1` version is a unsupported development phase. Nonetheless, we do have some key elements you should pay attention to while upgrading.
-
-First update the `thinktomorrow/chief` dependency to `~0.2` in your `composer.json` file.
-
-Pay attention to the following changes:
-- You need to change a couple of migration entries due to assetlibrary major version upgrade. Table (squanto, media, asset) already exists: migrations table -> change the keys to the following : 2019_01_10_154910_create_asset_table, 2019_01_10_154909_create_media_table, 2019_01_10_154902_create_squanto_tables
-- assetlibrary 0.5 uses the name + conversion as filename. This is different from previous versions where this was not the default behaviour e.g. full.jpg becomes heroname-full.jpg
-- run migrations for extra default tables for asset library
-
-#### Updating pre-refactor managers
-
-The Linking of managers to models has changed from the chief config file to a serviceprovider.
-Lets first create our ChiefProjectServiceProvider and start linking our collection from the config file.
-
-To link a page, use the provided PageManager.
-To link a module, use the provided ModuleManager.
-You can also define your own manager for custom classes. We will go into this custom manager later.
-
-Before:
-```php
-# config/chief.php
-
-...
-'collections' => [
-    // Pages
-    'singles'  => Singles\Single::class,
-
-    // Modules
-    'banner'  => Banner::class,
-],
-...
-```
-
-After:
-```php
-# providers/ChiefProjectServiceProvider.php
-
-public function boot()
-{
-    // Boot core registrations
-    parent::boot();
-
-    // Managers
-    $this->registerManager('singles', PageManager::class, Single::class);
-
-    //Module Managers
-    $this->registerManager('banner', ModuleManager::class, Banner::class);
-
-    //Custom Classes
-    $this->registerManager('members', MemberManager::class, Member::class);
-}
-```
-
-Next up the ManagementDefaults have been removed and aside from implemementing the ModelManagers we now also extend from an AbstractManager.
-
-```php
-class MemberManager extends AbstractManager implements ModelManager
-{
-    
-}
-```
-
-If the model in question needs publishing or previewing functionality there are traits we can use and interfaces to implement.
-
-```php
-
-class MemberManager extends AbstractManager implements ModelManager, ManagerThatPublishes, ManagerThatPreviews
-{
-    use ManagesPublishing,
-        ManagesPreviews;
-}
-```
+Have a look at [our upgrade guide](./upgrading.md) for more information on upgrading Chief.
 
 ## Contributing
-
-
+Although we develop Chief as an application tailored for our projects, you are welcome to contribute to the development of Chief.
+Have a look at our github page for more information.
 
 ## FAQ
 

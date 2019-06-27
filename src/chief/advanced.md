@@ -1,5 +1,9 @@
 # Advanced Page Management
 
+## Authorization & authentication
+Note that Chief has separate tables for the chief admin users, `chief-users` and `chief_password_resets`. This way there is no interference with your application user logic.
+
+
 ## Grouping pages in the pagebuilder
 
 One of the ways to group pages together is to add them to the pagebuilder next to eachother.
