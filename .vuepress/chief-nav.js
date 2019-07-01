@@ -1,11 +1,13 @@
 var utils = require('./utilities.js');
 
 module.exports = [
-    ['initial_setup', 'Initial setup'],
+    ['installation', 'Installation'],
     ['upgrading', 'Upgrading'],
+    ['basics', 'Basics'],
     ['pages', 'Pages'],
     ['users', 'Users'],
     ['models', 'Models'],
-    ['advanced', 'Advanced setup'],
+    ['advanced', 'Advanced'],
     ['site_config', 'Site configuration'],
+    ['contributing', 'Contributing'],
 ]

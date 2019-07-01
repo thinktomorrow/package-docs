@@ -1,26 +1,131 @@
 # Upgrading
 
+## Releases
 The latest version of Chief is `0.3.*` which is the one being currently developed upon.
-Please note that the `0.1` release is only maintained for security fixes and critical bugfixes.
-
-For each upgrade you run the `composer update thinktomorrow/chief` command to update Chief to the latest version, according to your version constraints.
-Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root. This will update all style and script assets.
+Previous versions will no longer be maintained with the exception for security fixes and critical bugfixes.
+It is strongly recommended to upgrade to the latest version.
 
 ## Versioning
-Chief follows the semantic versioning and we always try to maintain a backward compatible release cycle.
-The major version will include breaking changes and features that are not backward compatible.
-For each major version, we will provide an upgrade guide to make this process as painless as possible.
-The minor version will contain new features or deprecations that are still backward compatible.
-The patch version is used for bugfixes and is safe to update in your current chief version.
-:::warning
+Chief follows the [semantic versioning](https://semver.org/) and we always try to maintain a backward compatible release cycle.
 Note that while development is still in the 0.* release cycle, minor versions will be able to contain breaking changes.
-:::
 
-## Upgrading from 0.2.10 to 0.3.*
-There are a couple of breaking changes in this upgrade. The most changes orientate around the routing and view presentation logic. If you've never done advanced stuff, you're probably fine upgrading without difficulties.
+## Upgrading from 0.2.14 to 0.3.*
+
+#### Installation
+Set your composer package constraint to `thinktomorrow/chief: ^0.3`. Run `composer update thinktomorrow/chief` command to get to the latest 0.3.* version.
+
+Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root.
+Note that with the force flag you'll update all existing chief style and script assets in your project.
+
+There are a couple of breaking changes in this upgrade. If you've done some advanced customisation, you're probably fine upgrading without too much hassle.
+
+### Updated config
+There are some new configuration options added like `strict`, `route.autoload`, `route.name` and `base-view-paths`.
+Complete your config file by adding the following values:
+```php
+# /config/thinktomorrow/chief.php
+
+/**
+ * A request can encounter non-critical errors like non found urls or views. When such an error occurs
+ * in strict mode, your app will halt and showcase these errors. You should set this to true while
+ * in development. We recommend to disable strict mode in production to suppress these errors.
+ */
+'strict' => env('APP_DEBUG', false),
+
+'route' => [
+    /**
+     * By default Chief will add the pages.show routing to your app. Since this is a catch-all route, it will be loaded last.
+     * If this conflicts with your project, set the autoload value to false. In this case you are responsible for handling the routing.
+     * Use the following route snippet as a starting point:
+     *
+     *      Route::get('{slug?}', function($slug = '/'){
+     *          return \Thinktomorrow\Chief\Urls\ChiefResponse::fromSlug($slug);
+     *      })->name('pages.show')->where('slug', '(.*)?');
+     *
+     */
+    'autoload' => true,
+
+    /**
+     * Route name for the route that chief uses to listen and interact with
+     * a page request. It is set to `pages.show` but if this conflicts
+     * with your project naming conventions, you can change it here.
+     */
+    'name' => 'pages.show',
+],
+
+/**
+ * The Viewable::viewPath() method gives the view path for that specific model.
+ * By default, we provide some sensible defaults for pages, modules and sets.
+ * Here you define the relative base view path for these resp. models.
+ */
+'base-view-paths' => [
+    'pages'   => 'pages',
+    'modules' => 'modules',
+    'sets'    => 'sets',
+],
+
+```
+
+### New url logic
+--> php artisan migrate will . Backup your database beforehand.
+
+### Removed classes
+The following classes are removed
+Trait 'Thinktomorrow\Chief\Relations\PresentingForParent' not found
+Interface 'Thinktomorrow\Chief\Relations\PresentForParent' not found
+
+Thinktomorrow\Chief\Concerns\ProvidesUrl\ProvidesUrl moved to
+
+Implement the `ViewableContract` if the model should be rendered on the site.
+Implement the `ProvidesUrl` contract if the model needs to be accessed directly via an url.
+
+### Removed: pages.home route
+The `pages.home` is no longer required in version 0.3. You are free to still use it in your project, it won't break anything. The Chief admin system
+will no longer rely on this route to exist.
+
+### Removed: route and controller
+In version 0.3, the route declaration for the `pages.show` is done via the ChiefServiceProvider. It is no longer
+necessary to add this yourself to the project route file. If you need to keep your own routing in place, make
+sure to set the chief setting `thinktomorrow.chief.route.autoload` to `false` so it will no longer autoload
+this route.
+
+The PagesController is replaced by a `ChiefResponse` class which takes care of interpreting and answering the request
+with the proper model and view. Under the hood the following routing logic is being used:
+```php
+Route::get('{slug?}', function ($slug = '/') use($routeName) {
+    return ChiefResponse::fromSlug($slug);
+})->name('pages.show')->where('slug', '(.*)?');
+```
+
+### Removed: Page::menuUrl()
+The `Page::menuUrl()` was deprecated in previous 0.2 version and is now removed in favor of the `Page::url()` method.
+
+### Removed: `Page::hasPagebuilder()`
+`Page::hasPagebuilder()` and `Page::pagebuilder` were deprecated in 0.2 and are now removed. They are no longer used to determine if
+pagebuilder should be used or not. If you need to control the pagebuilder setup, you should adapt the `fields()` return value instead.
+
+### Removed: $page and $module view variables.
+- The page or module is now passed as a `$model` variable to the view. The `$page`, `$module` and `$pages` - as used by custom query sets - variables
+are set as deprecated and will be removed in 0.4.
+
+### Changed: default viewpaths
+The default viewpaths no longer assume the `front` folder. These are:
+- pages: `resources/views/pages`,
+- modules: `resources/views/modules`,
+- sets: `resources/views/sets`
+
+You can change these to fit your project's needs in the `thinktomorrow.chief.base-view-paths` config setting.
+
 Please pay extra attention if you recognize one of the following cases in your project:
 - you are using either the `PresentForParent` contract or the `PresentingForParent` trait.
 -
+
+### Changed: Don't use magic property `Page::url`
+Page::url() is a method and no longer available as property.
+
+### Changed: fieldArrangement()
+If you've written a custom `Manager::fieldArrangement()`, chances are that you'll need to replace the `$this->fields` presence in the method to `$this->fieldsWithAssistantFields()`.
+This change is needed to include any assistant added fields as well.
 
 ### Changed PagesController logic
 
