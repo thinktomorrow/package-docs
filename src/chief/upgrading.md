@@ -3,7 +3,7 @@
 ## Releases
 The latest version of Chief is `0.3.*` which is the one being currently developed upon.
 Previous versions will no longer be maintained with the exception for security fixes and critical bugfixes.
-It is strongly recommended to upgrade to the latest version.
+It is strongly recommended to upgrade to the latest `0.3` version.
 
 ## Versioning
 Chief follows the [semantic versioning](https://semver.org/) and we always try to maintain a backward compatible release cycle.
@@ -26,9 +26,9 @@ Complete your config file by adding the following values:
 # /config/thinktomorrow/chief.php
 
 /**
- * A request can encounter non-critical errors like non found urls or views. When such an error occurs
- * in strict mode, your app will halt and showcase these errors. You should set this to true while
- * in development. We recommend to disable strict mode in production to suppress these errors.
+ * When chief is in strict mode, it exposes potential errors and warnings in your application.
+ * Non-critical errors like non found urls or views. When such an error occurs in strict mode,
+ * your app will throw an exception. Strict mode is by default only enabled in development.
  */
 'strict' => env('APP_DEBUG', false),
 
@@ -66,25 +66,40 @@ Complete your config file by adding the following values:
 
 ```
 
-### New url logic
---> php artisan migrate will . Backup your database beforehand.
+### Migrate page slugs to url table
+The routing will still not work since there are no url entries yet. After installing the new version, you'll need to run migrations via `php artisan migrate`. These migrations will also copy all page slugs and convert them to
+proper urls. Note that the original slug column is not being removed. You'll need to do this by yourself. The following schema can
+be a good starting point for such a migration:
+```php
+Schema::table('page_translations', function (Blueprint $table) {
+    $table->dropColumn('slug');
+});
+```
 
-### Removed classes
-The following classes are removed
-Trait 'Thinktomorrow\Chief\Relations\PresentingForParent' not found
-Interface 'Thinktomorrow\Chief\Relations\PresentForParent' not found
+### Removals
+The following classes are removed or haved changed location:
+- Interface `Thinktomorrow\Chief\Relations\PresentForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\ViewableContract`.
+- Trait `Thinktomorrow\Chief\Relations\PresentingForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\Viewable`.
+- `Thinktomorrow\Chief\Concerns\ProvidesUrl\ProvidesUrl` moved to `Thinktomorrow\Chief\Urls\ProvidesUrl\ProvidesUrl`.
 
-Thinktomorrow\Chief\Concerns\ProvidesUrl\ProvidesUrl moved to
+The following methods have been replaced:
+- The former method for rendering a view was `presentForParent(ActingAsParent $parent)` and is no longer available. Use the `renderView()` method instead.
+- The `view()` method on the Page model is removed and `renderView()` should be used instead. If you used this method in determining the frontend view, you should switch to the new response flow. See below.
+- The `Page::menuUrl()` was deprecated in previous 0.2 version and is now removed in favor of the `Page::url()` method.
+- `Page::hasPagebuilder()` and `Page::pagebuilder` were deprecated in 0.2 and are now removed. They are no longer used to determine if
+- Removed: `Page::findBySlug()` and `Page::findPublishedBySlug()`.
+  pagebuilder should be used or not. If you need to control the pagebuilder setup, you should adapt the `fields()` return value instead.
+- Removed: Homepage setting and `chief-settings.homepage` config value. A homepage is now determined by changing the page url to a '/'.
 
-Implement the `ViewableContract` if the model should be rendered on the site.
-Implement the `ProvidesUrl` contract if the model needs to be accessed directly via an url.
+### Deprecations
+The model data passed to the view, will now always be passed as a `$model` or `$collection` variable. Since 0.3 the `$page`, `$module` and `$pages` are deprecated.
 
-### Removed: pages.home route
-The `pages.home` is no longer required in version 0.3. You are free to still use it in your project, it won't break anything. The Chief admin system
-will no longer rely on this route to exist.
+### Route pages.home not required
+The `pages.home` is no longer required in version 0.3. Chief will no longer rely on this route to exist.
+You are free to still use it in your project.
 
-### Removed: route and controller
-In version 0.3, the route declaration for the `pages.show` is done via the ChiefServiceProvider. It is no longer
+### Project route and controller no longer required
+In version 0.3, the route declaration for the `pages.show` is done automatically. It is no longer
 necessary to add this yourself to the project route file. If you need to keep your own routing in place, make
 sure to set the chief setting `thinktomorrow.chief.route.autoload` to `false` so it will no longer autoload
 this route.
@@ -97,160 +112,19 @@ Route::get('{slug?}', function ($slug = '/') use($routeName) {
 })->name('pages.show')->where('slug', '(.*)?');
 ```
 
-### Removed: Page::menuUrl()
-The `Page::menuUrl()` was deprecated in previous 0.2 version and is now removed in favor of the `Page::url()` method.
-
-### Removed: `Page::hasPagebuilder()`
-`Page::hasPagebuilder()` and `Page::pagebuilder` were deprecated in 0.2 and are now removed. They are no longer used to determine if
-pagebuilder should be used or not. If you need to control the pagebuilder setup, you should adapt the `fields()` return value instead.
-
 ### Removed: $page and $module view variables.
 - The page or module is now passed as a `$model` variable to the view. The `$page`, `$module` and `$pages` - as used by custom query sets - variables
 are set as deprecated and will be removed in 0.4.
 
 ### Changed: default viewpaths
-The default viewpaths no longer assume the `front` folder. These are:
+The default page and module viewpaths no longer assume the `front` folder. The default are now:
 - pages: `resources/views/pages`,
 - modules: `resources/views/modules`,
 - sets: `resources/views/sets`
 
 You can change these to fit your project's needs in the `thinktomorrow.chief.base-view-paths` config setting.
 
-Please pay extra attention if you recognize one of the following cases in your project:
-- you are using either the `PresentForParent` contract or the `PresentingForParent` trait.
--
-
-### Changed: Don't use magic property `Page::url`
-Page::url() is a method and no longer available as property.
-
 ### Changed: fieldArrangement()
 If you've written a custom `Manager::fieldArrangement()`, chances are that you'll need to replace the `$this->fields` presence in the method to `$this->fieldsWithAssistantFields()`.
-This change is needed to include any assistant added fields as well.
+This change is needed to include any optional assistant added fields as well.
 
-### Changed PagesController logic
-
-### ViewableContract replaces PresentForParent
-The `Thinktomorrow\Chief\Relations\PresentForParent` interface is removed. It should be replaced by the `ViewableContract` interface.
-The former method for rendering a view was `presentForParent(ActingAsParent $parent)` and is no longer available. Use the `renderView()` method instead.
-
-The `view()` method on the Page model is removed and `renderView()` should be used instead. If you used this method in determining the frontend view, you should switch to the new response flow. See below.
-
-If you have used a custom view folders to structure your project view files, you'll need to change the base viewpaths for your models. Instead of defining the baseViewPath property on each model, we provided a way to define these for all pages, modules and sets at once in the config. There is a new config value
-in thinktomorrow.chief called `base-view-paths`.
-
-### Migrate page slugs to url table
-The routing will still not work since there are no url entries yet. Let's fix this.
-With the new url table, the existing page slugs, that are found in the page_translations table, need to be moved over to the chief_urls table.
-You can set up a migration for this with basically the following code:
-```php
-use Thinktomorrow\Chief\Pages\Page;
-use Thinktomorrow\Chief\Urls\UrlRecord;
-...
-
-foreach(Page::all() as $page){
-    foreach($page->translations as $translation){
-        UrlRecord::create([
-            'locale'     => $translation->locale,
-            'slug'       => $translation->slug,
-            'model_type' => $page->morphKey(),
-            'model_id'   => $page->id,
-        ]);
-    }
-}
-```
-
-### Removed homepage config
-You no longer determine the homepage via a config setting. You set the slug value to an empty string instead.
-
-### Added base view paths config
-The base viewpaths for a page, module and set can be configured via a new parameter `base-view-paths`.
-The default configuration looks like this:
-```php
-# config/thinktomorrow/chief.php
-
-/**
-* Here you define the base view path for your pages, modules and sets. All module
-* views will be relative to this location. A sensible default has been set.
-* Note that is only is effect when not providing a custom viewPath.
-*/
-'base-view-paths' => [
-   'pages'   => 'front.pages',
-   'modules' => 'modules',
-   'sets'    => 'sets',
-],
-```
-
-## Upgrading from 0.1.* to 0.2.*
-
-The upgrade from 0.1 to 0.2 is not considered an official upgrade. This is because the `0.1` version is a unsupported development phase. Nonetheless, we do have some key elements you should pay attention to while upgrading.
-
-First update the `thinktomorrow/chief` dependency to `~0.2` in your `composer.json` file.
-
-Pay attention to the following changes:
-- You need to change a couple of migration entries due to assetlibrary major version upgrade. Table (squanto, media, asset) already exists: migrations table -> change the keys to the following : 2019_01_10_154910_create_asset_table, 2019_01_10_154909_create_media_table, 2019_01_10_154902_create_squanto_tables
-- assetlibrary 0.5 uses the name + conversion as filename. This is different from previous versions where this was not the default behaviour e.g. full.jpg becomes heroname-full.jpg
-- run migrations for extra default tables for asset library
-
-#### Updating pre-refactor managers
-
-The Linking of managers to models has changed from the chief config file to a serviceprovider.
-Lets first create our ChiefProjectServiceProvider and start linking our collection from the config file.
-
-To link a page, use the provided PageManager.
-To link a module, use the provided ModuleManager.
-You can also define your own manager for custom classes. We will go into this custom manager later.
-
-Before:
-```php
-# config/chief.php
-
-...
-'collections' => [
-    // Pages
-    'singles'  => Singles\Single::class,
-
-    // Modules
-    'banner'  => Banner::class,
-],
-...
-```
-
-After:
-```php
-# providers/ChiefProjectServiceProvider.php
-
-public function boot()
-{
-    // Boot core registrations
-    parent::boot();
-
-    // Managers
-    $this->registerManager('singles', PageManager::class, Single::class);
-
-    //Module Managers
-    $this->registerManager('banner', ModuleManager::class, Banner::class);
-
-    //Custom Classes
-    $this->registerManager('members', MemberManager::class, Member::class);
-}
-```
-
-Next up the ManagementDefaults have been removed and aside from implemementing the ModelManagers we now also extend from an AbstractManager.
-
-```php
-class MemberManager extends AbstractManager implements ModelManager
-{
-
-}
-```
-
-If the model in question needs publishing or previewing functionality there are traits we can use and interfaces to implement.
-
-```php
-
-class MemberManager extends AbstractManager implements ModelManager, ManagerThatPublishes, ManagerThatPreviews
-{
-    use ManagesPublishing,
-        ManagesPreviews;
-}
-```

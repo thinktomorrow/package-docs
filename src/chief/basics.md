@@ -1,15 +1,12 @@
 # Basics
 
-On a typical request there are two core concepts that are vital for a successful delivery of the content: chief views and urls.
-A page can only be delivered to the visitor if it has a view and an url.
+## Your first page
+Let's make sure a page can be rendered in the browser. You'll need to add a page view to your project.
 
-## Views
-In order to display the page content to your visitors, you'll need at least 2 templates for your pages and modules.
-For now, it's sufficient to know that a page consists of one or more _modules_. We'll discuss modules in depth later on.
-
-#### Page template
-Create a file `resources/views/pages/show.blade.php` and add the following content to it:
+Create a file `pages/show.blade.php` and add the following code to it:
 ```html
+<!-- resources/views/pages/show.blade.php -->
+
 <!DOCTYPE html>
 <html>
 <body>
@@ -17,24 +14,45 @@ Create a file `resources/views/pages/show.blade.php` and add the following conte
 </body>
 </html>
 ```
-The `renderChildren` method is responsible for constructing an rendering the page content. This is one
-method you'll always need to include in your template file.
 
-#### Module template
-Create a file `resources/views/modules/show.blade.php` and add the following content to it:
+The key method here is `Page::renderChildren()`, which renders the page content.
+
+Also note that the html structure is simplified for demonstration purposes. In your project you probably want to use your own html boilerplate.
+
+#### Page modules
+A page is built up by so called _modules_.
+We'll explain modules in depth later on. For now, it's sufficient to know that each module represents a block of content and takes care of its own rendering. So you'll need a default template for modules as well.
+
+Create a module view `modules/show.blade.php`:
 ```html
+<!-- resources/views/modules/show.blade.php -->
+
 {!! $module->content !!}
 ```
 
-:::tip Default view folders
-If the view directory `pages` conflicts with your project, you can always change the directory basepath setting in
+:::tip Default templates
+Both `pages/show.blade.php` and `modules/show.blade.php` files are default templates that serve as fallback for resp. all pages and modules.
+In the [Templates](#templates) section we will go into further detail on how to make view templates for specific [page types](#page-types).
+:::
+:::tip Changing the view folders
+Default location for page templates is `resources/views/pages/` and for modules `resources/views/modules`.
+If these view directories conflict with your project, you can always change the directory settings in the
 config `thinktomorrow.chief.base-view-paths.pages`. Note that this will have affect to all page renders.
 :::
 
-## Page view
+## Static pages
+If you create a page in the admin, you should now be able to view the result in your browser.
+So now you are able to deal with static pages. Let's go on and explore how to tackle collections.
 
-With a fresh Chief installation, an admin can immediately start creating and publishing pages.
-This is a good starting point for managing static content.
+## Collections
+...
+
+## Modules
+
+## Sets
+
+## Templates
+
 
 
 ## Registrering chief models
@@ -65,6 +83,7 @@ Make sure to add this service provider to your `config/app.php` file:
 \App\Providers\ChiefProjectServiceProvider::class,
 ```
 
+## Fields
 
 ### Localization
 When coding in Europe, you'll probably need to provide your site in more than one language. Localization is built into the core of Chief.
