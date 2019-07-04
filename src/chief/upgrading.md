@@ -67,14 +67,12 @@ Complete your config file by adding the following values:
 ```
 
 ### Migrate page slugs to url table
-The routing will still not work since there are no url entries yet. After installing the new version, you'll need to run migrations via `php artisan migrate`. These migrations will also copy all page slugs and convert them to
-proper urls. Note that the original slug column is not being removed. You'll need to do this by yourself. The following schema can
-be a good starting point for such a migration:
-```php
-Schema::table('page_translations', function (Blueprint $table) {
-    $table->dropColumn('slug');
-});
-```
+The routing will still not work since there are no url entries yet. After installing the new version, you'll need to run migrations via `php artisan migrate`.
+These migrations will also copy all page slugs and convert them to proper urls.
+:::warning page_translations.slug will be removed
+Note that this migration removes the slug column on the page_translations table.
+:::
+
 
 ### Removals
 The following classes are removed or haved changed location:
@@ -94,7 +92,13 @@ The following methods have been replaced:
 ### Deprecations
 The model data passed to the view, will now always be passed as a `$model` or `$collection` variable. Since 0.3 the `$page`, `$module` and `$pages` are deprecated.
 
-### Route pages.home not required
+### middleware group and aliases no longer required
+The `web-chief` middleware group is now autoloaded by the package. It is no longer needed to add this yourself in the `App\Http\Kernel` file.
+
+The following route middleware aliases are no longer required to load up in your project. There are handled by the package itself.
+`auth.superadmin`,  `chief-guest`, `chief-validate-invite`
+
+### Route pages.home no longer required
 The `pages.home` is no longer required in version 0.3. Chief will no longer rely on this route to exist.
 You are free to still use it in your project.
 

@@ -23,10 +23,9 @@ The package will automatically register its service provider but you'll need to 
 
 1. [Migrations](#_1-migrations)
 2. [Exception handler](#_2-exception-handler)
-3. [Middleware](#_3-middleware)
-4. [Chief config](#_4-chief-config)
-5. [Chief assets](#_5-chief-assets)
-6. [First admin user](#_6-first-admin-user)
+3. [Chief config](#_4-chief-config)
+4. [Chief assets](#_5-chief-assets)
+5. [First admin user](#_6-first-admin-user)
 
 ### 1. Migrations
 
@@ -49,37 +48,6 @@ use Thinktomorrow\Chief\App\Exceptions\Handler as ChiefExceptionHandler;
 class Handler extends ChiefExceptionHandler
 {
 ...
-```
-
-### 3. Middleware
-Add the `\Thinktomorrow\Chief\App\Http\Middleware\AuthenticateChiefSession::class` middleware to your `App\Http\Kernel` file
-in a `web-chief` middleware group:
-
-```php{5-7}
-# App\Http\Kernel.php
-
-protected $middlewareGroups = [
-    ...
-    'web-chief' => [
-            \Thinktomorrow\Chief\App\Http\Middleware\AuthenticateChiefSession::class,
-    ],
-    ...
-]
-```
-
-In the same file add the following middlewares to the $routeMiddleware array.
-
-```php
-# App\Http\Kernel.php
-
-protected $routeMiddleware = [
-    'auth.superadmin'       => \Thinktomorrow\Chief\App\Http\Middleware\AuthenticateSuperadmin::class,
-    'chief-guest'           => \Thinktomorrow\Chief\App\Http\Middleware\ChiefRedirectIfAuthenticated::class,
-    'chief-validate-invite' => \Thinktomorrow\Chief\App\Http\Middleware\ChiefValidateInvite::class,
-    'role'                  => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-    'permission'            => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-    ...
-];
 ```
 
 ::: warning Rename login routename to chief.back.login
