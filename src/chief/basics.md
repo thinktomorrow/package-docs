@@ -15,7 +15,7 @@ Create a file `pages/show.blade.php` and add the following code to it:
 </html>
 ```
 
-The key method here is `Page::renderChildren()`, which renders the page content.
+The key method here is `renderChildren()`, which renders the page content.
 
 Also note that the html structure is simplified for demonstration purposes. In your project you probably want to use your own html boilerplate.
 
@@ -31,13 +31,13 @@ Create a module view `modules/show.blade.php`:
 ```
 
 :::tip Default templates
-Both `pages/show.blade.php` and `modules/show.blade.php` files are default templates that serve as fallback for resp. all pages and modules.
+Both `pages/show.blade.php` and `modules/show.blade.php` files are default templates that serve as fallback for respectively all pages and modules.
 In the [Templates](#templates) section we will go into further detail on how to make view templates for specific [page types](#page-types).
 :::
 :::tip Changing the view folders
 Default location for page templates is `resources/views/pages/` and for modules `resources/views/modules`.
 If these view directories conflict with your project, you can always change the directory settings in the
-config `thinktomorrow.chief.base-view-paths.pages`. Note that this will have affect to all page renders.
+config `thinktomorrow.chief.base-view-paths.pages`. Note that this will have affect on all page renders.
 :::
 
 ## Static pages
@@ -45,7 +45,60 @@ If you create a page in the admin, you should now be able to view the result in 
 So now you are able to deal with static pages. Let's go on and explore how to tackle collections.
 
 ## Collections
-...
+Apart from static pages, you can also define a collection of pages (e.g articles, blogposts, products, etc).
+To get started with collection we create a model for the collection.
+
+Let's make a 'articles' collection.
+
+```php
+use Thinktomorrow\Chief\Pages\Page;
+
+class Article extends Page
+{
+    
+}
+```
+
+To make this managed through the chief admin panel we need to link it to a manager.
+To link our own models and make them managed you should create a service provider to do this setup.
+
+```php
+namespace App\Providers;
+
+use Thinktomorrow\Chief\App\Providers\ChiefProjectServiceProvider as BaseChiefProjectServiceProvider;
+
+class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
+{
+    public function boot()
+    {
+        // Boot core registrations
+        parent::boot();
+
+        // Pages
+        $this->registerPage('articles', PageManager::class, Article::class);
+    }
+}
+
+```
+Let's just use the default PageManager for now and link it to our newly created article model.
+
+Perfect! Now you have a collection of products that you can manage through the chief admin panel.
+But it will still use the default pages.show view to display these pages so let's use our own view for these articles.
+
+To use your own layout it's as easy as making a view file at 'pages.REGISTRATION_KEY' so for our example of articles we would make the view
+pages.articles.blade.php.
+
+```html
+<!-- resources/views/pages/articles.blade.php -->
+
+<!DOCTYPE html>
+<html>
+<body>
+    {!! $model->renderChildren() !!}
+</body>
+</html>
+```
+
 
 ## Modules
 
