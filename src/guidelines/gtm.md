@@ -12,11 +12,11 @@ Create a new container/account in GTM first.
 Then go to Admin in the top left and select import container.
 This is where you upload the .json.
 
-You can create a new workspace or import/merge it in the current workspace.
+You can create a new workspace or import it in the current workspace.
 
-Now the only thing to do is to set your analytics id in the 'lookup table' variable.
+Now the only thing to do is to set your analytics id in the 'Google analytics id' variable.
 
-For more explanation on the lookup table you can look [here](#initial-setup)
+And you're ready to start tracking the basics with Google Analytics
 
 ## Getting started
 
