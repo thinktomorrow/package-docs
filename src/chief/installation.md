@@ -1,6 +1,6 @@
 # Installation
 Chief is a laravel package that adds a site management system to your project.
-Out of the box you'll get page, url and menu management provided a well-crafted admin ui. All of this with localization in mind.
+Out of the box you'll get page, url and menu management provided through a well-crafted admin UI. All of this with localization in mind.
 
 ## Requirements
 There are a few minimum requirements for chief to be installable:
@@ -145,4 +145,3 @@ public function boot()
     Schema::defaultStringLength(191);
 }
 ```
-
