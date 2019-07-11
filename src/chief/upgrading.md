@@ -14,6 +14,9 @@ Note that while development is still in the 0.* release cycle, minor versions wi
 #### Installation
 Set your composer package constraint to `thinktomorrow/chief: ^0.3`. Run `composer update thinktomorrow/chief` command to get to the latest 0.3.* version.
 
+If during the install any errors occur regarding files not existing please refer to the [removals](#removals) section, change the affected classes
+and run `composer install` again.
+
 Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root.
 Note that with the force flag you'll update all existing chief style and script assets in your project.
 
@@ -75,6 +78,13 @@ Note that this migration removes the slug column on the page_translations table.
 
 
 ### Removals
+
+## Routes
+The chief routes or now autoloaded so you can safely remove the chief routes in your project and the controller linked to these.
+If you need to keep your own routing in place, make sure to set the chief setting `thinktomorrow.chief.route.autoload` to `false` so it will no longer autoload
+this route.
+
+## Classes
 The following classes are removed or haved changed location:
 - Interface `Thinktomorrow\Chief\Relations\PresentForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\ViewableContract`.
 - Trait `Thinktomorrow\Chief\Relations\PresentingForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\Viewable`.
@@ -84,10 +94,19 @@ The following methods have been replaced:
 - The former method for rendering a view was `presentForParent(ActingAsParent $parent)` and is no longer available. Use the `renderView()` method instead.
 - The `view()` method on the Page model is removed and `renderView()` should be used instead. If you used this method in determining the frontend view, you should switch to the new response flow. See below.
 - The `Page::menuUrl()` was deprecated in previous 0.2 version and is now removed in favor of the `Page::url()` method.
-- `Page::hasPagebuilder()` and `Page::pagebuilder` were deprecated in 0.2 and are now removed. They are no longer used to determine if
+- `Page::hasPagebuilder()` and `Page::pagebuilder` were deprecated in 0.2 and are now removed. They are no longer used to determine if pagebuilder should be used or not. If you need to control the pagebuilder setup, you should adapt the `fields()` return value instead.
 - Removed: `Page::findBySlug()` and `Page::findPublishedBySlug()`.
-  pagebuilder should be used or not. If you need to control the pagebuilder setup, you should adapt the `fields()` return value instead.
 - Removed: Homepage setting and `chief-settings.homepage` config value. A homepage is now determined by changing the page url to a '/'.
+- Added: ProvidesUrl now also required you to implement the resolveUrl function. The default to be used is the following:
+
+```php
+public function resolveUrl(string $locale = null, $parameters = null): string
+{
+    $routeName = config('thinktomorrow.chief.route.name');
+
+    return $this->resolveRoute($routeName, $parameters, $locale);
+}
+```
 
 ### Deprecations
 The model data passed to the view, will now always be passed as a `$model` or `$collection` variable. Since 0.3 the `$page`, `$module` and `$pages` are deprecated.
@@ -98,23 +117,6 @@ The `web-chief` middleware group is now autoloaded by the package. It is no long
 The following route middleware aliases are no longer required to load up in your project. There are handled by the package itself.
 `auth.superadmin`,  `chief-guest`, `chief-validate-invite`
 
-### Route pages.home no longer required
-The `pages.home` is no longer required in version 0.3. Chief will no longer rely on this route to exist.
-You are free to still use it in your project.
-
-### Project route and controller no longer required
-In version 0.3, the route declaration for the `pages.show` is done automatically. It is no longer
-necessary to add this yourself to the project route file. If you need to keep your own routing in place, make
-sure to set the chief setting `thinktomorrow.chief.route.autoload` to `false` so it will no longer autoload
-this route.
-
-The PagesController is replaced by a `ChiefResponse` class which takes care of interpreting and answering the request
-with the proper model and view. Under the hood the following routing logic is being used:
-```php
-Route::get('{slug?}', function ($slug = '/') use($routeName) {
-    return ChiefResponse::fromSlug($slug);
-})->name('pages.show')->where('slug', '(.*)?');
-```
 
 ### Removed: $page and $module view variables.
 - The page or module is now passed as a `$model` variable to the view. The `$page`, `$module` and `$pages` - as used by custom query sets - variables
@@ -132,3 +134,6 @@ You can change these to fit your project's needs in the `thinktomorrow.chief.bas
 If you've written a custom `Manager::fieldArrangement()`, chances are that you'll need to replace the `$this->fields` presence in the method to `$this->fieldsWithAssistantFields()`.
 This change is needed to include any optional assistant added fields as well.
 
+### Homepage
+
+Due to the changes in url management you should make sure one of your pages has '/' as its url to identify it as the homepage.
