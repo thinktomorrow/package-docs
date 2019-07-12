@@ -9,25 +9,23 @@ composer require thinktomorrow/assetlibrary
 
 The provider will register itself so there's no need to add it manually.
 
-Now let's publish the config and migration files.
-Run the following command and select the appropriate option for your situation.
+Now let's publish the config.
 
 ```bash
-php artisan vendor:publish
+php artisan vendor:publish --tag="assetlibrary-config"
 ```
 
-Option 1:
+And then run the migrations.
 
-Select AssetLibraryServiceProvider from the list to publish all the config and migrations.
-
-Option 2:
-
-Select the assetlibrary-config/assetlibrary-migrations to publish the config and migrations separately
+```bash
+php artisan migrate
+```
 
 ### Laravel compatibility
 
 | Laravel  | Assetlibrary  |
 |---|---|
+| 5.6-5.8  | 0.5  |
 | 5.6-5.7  | 0.4  |
 | 5.5  | 0.3  |
 
