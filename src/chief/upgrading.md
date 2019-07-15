@@ -76,6 +76,24 @@ These migrations will also copy all page slugs and convert them to proper urls.
 Note that this migration removes the slug column on the page_translations table.
 :::
 
+### Changes to model registration
+In version 0.2.14 you needed to define a registrationkey as the first parameter  per model/manager pair registration.
+This first parameter is now renamed to managedModelKey and moved to the models.
+So to get everything in line remove the first parameter from the registrations in your ChiefprojectServiceProvider.
+```php
+
+// version 0.2.14
+$this->registerPage('singles', PageManager::class, Single::class);
+
+// version 0.3
+$this->registerPage(PageManager::class, Single::class);
+```
+
+And on the model you should add the managedModelKey and choose a relevant name.
+
+```php
+protected static $managedModelKey = 'singles';
+```
 
 ### Removals
 
