@@ -95,6 +95,12 @@ And on the model you should add the managedModelKey and choose a relevant name.
 protected static $managedModelKey = 'singles';
 ```
 
+### Model labels
+
+The labelSingular and labelPlural field are now only accepted on the model instead of both the model and the manager. 
+
+You should removed the declaration of these fields on the manager to their respective models.
+
 ### Removals
 
 ## Routes
