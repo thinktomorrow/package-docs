@@ -55,7 +55,7 @@ use Thinktomorrow\Chief\Pages\Page;
 
 class Article extends Page
 {
-    
+    protected static $managedModelKey = 'articles';
 }
 ```
 
@@ -75,7 +75,7 @@ class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
         parent::boot();
 
         // Pages
-        $this->registerPage('articles', PageManager::class, Article::class);
+        $this->registerPage(PageManager::class, Article::class);
     }
 }
 
@@ -126,7 +126,7 @@ class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
         parent::boot();
 
         // Example of registering event pages
-        $this->registerPage('events', PageManager::class, \App\Events\Event::class);
+        $this->registerPage(PageManager::class, \App\Events\Event::class);
     }
 }
 ```

@@ -122,7 +122,7 @@ protected static $managedModelKey = 'singles';
 
 The labelSingular and labelPlural field are now only accepted on the model instead of both the model and the manager. 
 
-You should removed the declaration of these fields on the manager to their respective models.
+You should remove the declaration of these fields on the manager to their respective models.
 
 ### Removals
 
