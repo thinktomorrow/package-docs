@@ -183,3 +183,9 @@ class LocaleFilter extends SelectFilter
     }
 }
 ```
+
+### Custom chief pages
+
+Any page can be added as a nav item in chief by added them to the nav-main.blade.php that you override in your project.
+
+One thing to keep in mind while defining the routes is to add the web, web-chief and auth:chief middleware to your routes to make sure all the authorization works correctly.
