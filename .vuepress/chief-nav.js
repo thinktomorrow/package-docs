@@ -5,5 +5,6 @@ module.exports = [
     ['upgrading', 'Upgrading'],
     ['basics', 'Basics'],
     ['advanced', 'Advanced'],
+    ['fields', 'Fields'],
     ['contributing', 'Contributing'],
 ]

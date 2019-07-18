@@ -136,9 +136,7 @@ Make sure to add this service provider to your `config/app.php` file:
 \App\Providers\ChiefProjectServiceProvider::class,
 ```
 
-## Fields
-
-### Localization
+## Localization
 When coding in Europe, you'll probably need to provide your site in more than one language. Localization is built into the core of Chief.
 In order to manage the locales, you need to configure the following files:
 - Set the available locales of the application in the `config/translatable.php` file. These are the locales in which each page should be made available.
