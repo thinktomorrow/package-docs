@@ -69,6 +69,29 @@ Complete your config file by adding the following values:
 
 ```
 
+The `chief-settings` file is changed and now has the following values:
+```php
+ return [
+
+     /**
+      * Contact person (aka webmaster)
+      *
+      * The contact person receives all incoming communication e.g. contact form submissions
+      * and is the sender address for all transaction mails such as password reset mails.
+      */
+     'contact_email' => env('MAIL_ADMIN_EMAIL', 'info@thinktomorrow.be'),
+     'contact_name'  => env('MAIL_ADMIN_NAME', 'Think Tomorrow'),
+
+     /**
+      * Client details
+      *
+      * This is mainly a backend thing but it can occur in a
+      * couple of frontend places such as the mail footer.
+      */
+     'app_name' => 'Chief',
+ ];
+```
+
 ### Migrate page slugs to url table
 The routing will still not work since there are no url entries yet. After installing the new version, you'll need to run migrations via `php artisan migrate`.
 These migrations will also copy all page slugs and convert them to proper urls.
