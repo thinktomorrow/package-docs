@@ -29,7 +29,7 @@ The package will automatically register its service provider but you'll need to 
 
 ### 1. Migrations
 
-Run the migrate artisan command. This will automatically run the chief migrations as well.
+After setting you database credentials run the migrate artisan command. This will automatically run the chief migrations as well.
 ```php
 php artisan migrate
 ```
@@ -78,7 +78,7 @@ contact email and application name.
 ```php
 php artisan vendor:publish --tag=chief-config
 ```
-Make sure to set at least the `name` value to your project name as it is used in some of the generator commands. Ideally this should match
+Make sure to set at least the `name` value to your project name in your `.env` file as it is used in some of the generator commands. Ideally this should match
 the namespace of your `src` folder, if you have any. Make sure to namespace the src folder in your composer.json to match this name.
 
 The following vendor assets should also be published to your application:
@@ -95,7 +95,7 @@ The next step is to publish the chief-assets to our public folder.
 If you want to overwrite existing files you can add the `--force` flag here.
 
 ```php
-php artisan vendor:publish --tag=chief-assets
+php artisan vendor:publish --tag=chief-assets --force
 ```
 
 ### 6. First admin user
@@ -108,7 +108,7 @@ php artisan chief:admin --dev
 Now that all this setup is done, let's go to the chief admin panel to get your first glance on the admin.
 Go to the `/admin` route and login with your newly created credentials to access the admin panel.
 
-The [basics section]('./basics.md') of this guide will bring you up to speed on some of the important concepts to kickstart your project development.
+The [basics section](./basics.md) of this guide will bring you up to speed on some of the important concepts to kickstart your project development.
 
 ## FAQ
 
