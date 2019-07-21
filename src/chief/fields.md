@@ -28,22 +28,144 @@ class AuthorManager extends PageManager
 
 ## Available fields
 - [InputField](#inputfield)
-- TextField
-- HtmlField
-- SelectField
-- RadioField
+- [TextField](#textfield)
+- [HtmlField](#htmlfield)
+- [SelectField](#selectfield)
+- [RadioField](#radiofield)
+- [MediaField](#mediafield)
+- [DocumentField](#documentfield)
+- [DateField](#datefield)
 
 ### InputField
 
+The input field will render a basic input field.
+It has no special options.
+
+```php
+InputField::make('name'),
+```
+
+### TextField
+
+The text field will render a basic text field without wysiwyg functionality.
+It has no special options.
+
+```php
+TextField::make('name'),
+```
+
+### HtmlField
+
+The html field will render a wysiwyg field.
+It has no special options.
+
+```php
+HtmlField::make('name'),
+```
+
+
+### SelectField
+
+The select field will render a dropdown.
+Some required options for the selectfield are:
+- options: this is where you set the possible select options
+- selected: this is the currently selected value
+- multiple: this is a true or false value to denote is you are allowed to make multiple selections
+
+```php
+SelectField::make('countries')
+            ->options(['Belgium', 'America', 'Canada'])
+            ->selected($this->model->countries)
+            ->multiple(true),
+```
+
+### RadioField
+
+The radio field will render radio buttons.
+It extends the selectfield and has all it's options:
+- options
+- selected
+- multiple
+
+```php
+RadioField::make('gender')
+            ->options(['Male', 'Female', 'Other'])
+            ->selected($this->model->gender)
+            ->multiple(false),
+```
+
+### MediaField
+
+The media field will render a dropzone for image uploads.
+It has the following extra options:
+
+- multiple: this is a true or false value to denote is you are allowed to make multiple selections
+
+
+```php
+MediaField::make('banner')->multiple(false),
+```
+
+### DocumentField
+
+The document field will render a dropzone for file uploads.
+It has the following extra options:
+
+- multiple: this is a true or false value to denote is you are allowed to make multiple selections
+
+
+```php
+DocumentField::make('CV')->multiple(true),
+```
+
+### DateField
+
+The date field will render a field with a date selector.
+It has no special options.
+
+```php
+DateField::make('birthdate'),
+```
+
+:::tip
+To display this date correctly across all pages you need to define the field in the dates array on the model.
+:::
 
 ## Available options
+
+The following are the default available options on all fields:
+
+- make: the name of the field, also corresponds to the database column name
+- label: the label shown in the admin panel
+- description: the description shown underneath the label in the admin panel
+- validation: the laravel validation rules applied to this field. More on this in the section [Validation](#validation).
+- translated: the languages in which this field should be translated. More on this in the section [Localisation](#localisation).
+
+An example of a basic field with all these options filled in could look like this:
+
+```php
+InputField::make('title')->translatable(['en', 'nl'])
+                        ->validation('required-fallback-locale|max:200')
+                        ->label('Page Title')
+                        ->description('Title to be used in the admin.'),
+```
+
 ## Create a custom field
 ## Field arrangements
 All fields are
 
 ## Page fields
+
 ## Validation
+
 ## Localisation
+:::tip
+If you define a field as translatable you will have to override the `translatedAttributed` on the model so the translated field can be fetched.
+```
+protected $translatedAttributes = ['title', 'content', 'title_bg'];
+```
+In this case we added the title_bg field so we have to override all translated fields.
+:::
 
 ### Validating fields
 
