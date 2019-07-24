@@ -378,6 +378,7 @@ public function boot()
 For local development of chief we need another project to include the Chief package into since a package does not contain the whole laravel framework.
 To set up the chief package for local development we link our local chief folder as a repository in the composer.json file.
 
+
 Paste the following snippet in your composer.json file. This can be placed right above the 'require' section.
 ```php
 "repositories":[

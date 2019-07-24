@@ -4,5 +4,6 @@ module.exports = [
     '',
     'trello-workflow',
     'git-workflow',
-    'gtm'
+    'gtm',
+    'local-development'
 ]
