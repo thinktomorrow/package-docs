@@ -4,6 +4,7 @@
 Let's make sure a page can be rendered in the browser. You'll need to add a page view to your project.
 
 Create a file `pages/show.blade.php` and add the following code to it:
+
 ```html
 <!-- resources/views/pages/show.blade.php -->
 
@@ -75,6 +76,7 @@ In the `app/Providers` folder add a file named `ChiefProjectServiceProvider`. Th
 An example of this is:
 
 ```php
+// App\Providers\ChiefProjectServiceProvider.php
 namespace App\Providers;
 
 use Thinktomorrow\Chief\Pages\PageManager;
@@ -93,8 +95,10 @@ class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
 }
 ```
 
-Make sure to add this service provider to your `config/app.php` file:
+Make sure to add this service provider to your `app.php` config file:
 ```php
+// config/app.php
+
 \App\Providers\ChiefProjectServiceProvider::class,
 ```
 
@@ -121,7 +125,10 @@ pages/articles.blade.php.
 ## Modules
 
 Now let's get to the meat of Chief. Modules.
+
 A module represents a block of content and takes care of its own rendering.
+
+This also means it has no detail page and no url but you can add it to a page through the pagebuilder.
 
 So lets create a Header module.
 ```php
@@ -144,6 +151,8 @@ The managedModelKey is the string by which this model will be recognised.
 
 To make this managed through the chief admin panel we need to link it to a manager.
 ```php
+// App\Providers\ChiefProjectServiceProvider.php
+
 $this->registerModule(ModuleManager::class, Header::class);
 ```
 

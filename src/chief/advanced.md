@@ -7,8 +7,15 @@ Strict mode is enabled by default in development mode. In production builds this
 You can disable / enable strict mode in the chief config:
 ```php
 # config/thinktomorrow/chief.php
+
 'strict' => env('APP_DEBUG', false),
 ```
+
+# Advanced Model Management
+
+## Localization
+## Tweaking the admin form
+## Custom routes (e.g. publish/archive)
 
 ## Model views
 Implement the `ViewableContract` if the model should be rendered on the site.

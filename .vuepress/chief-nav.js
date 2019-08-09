@@ -4,7 +4,8 @@ module.exports = [
     ['installation', 'Installation'],
     ['upgrading', 'Upgrading'],
     ['basics', 'Basics'],
-    ['advanced', 'Advanced'],
+    ['managers', 'Customize Managers'],
     ['fields', 'Fields'],
+    ['advanced', 'Advanced'],
     ['contributing', 'Contributing'],
 ]

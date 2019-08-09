@@ -45,6 +45,8 @@ It has no special options.
 InputField::make('name'),
 ```
 
+![input field](./img/input-field.png)
+
 ### TextField
 
 The text field will render a basic text field without wysiwyg functionality.
@@ -53,6 +55,8 @@ It has no special options.
 ```php
 TextField::make('name'),
 ```
+
+![text field](./img/text-field.png)
 
 ### HtmlField
 
@@ -63,6 +67,7 @@ It has no special options.
 HtmlField::make('name'),
 ```
 
+![html field](./img/html-field.png)
 
 ### SelectField
 
@@ -79,6 +84,8 @@ SelectField::make('countries')
             ->multiple(true),
 ```
 
+![select field](./img/select-field.png)
+
 ### RadioField
 
 The radio field will render radio buttons.
@@ -94,6 +101,8 @@ RadioField::make('gender')
             ->multiple(false),
 ```
 
+![radio field](./img/radio-field.png)
+
 ### MediaField
 
 The media field will render a dropzone for image uploads.
@@ -105,6 +114,8 @@ It has the following extra options:
 ```php
 MediaField::make('banner')->multiple(false),
 ```
+
+![media field](./img/media-field.png)
 
 ### DocumentField
 
@@ -118,6 +129,8 @@ It has the following extra options:
 DocumentField::make('CV')->multiple(true),
 ```
 
+![document field](./img/document-field.png)
+
 ### DateField
 
 The date field will render a field with a date selector.
@@ -130,6 +143,8 @@ DateField::make('birthdate'),
 :::tip
 To display this date correctly across all pages you need to define the field in the dates array on the model.
 :::
+
+![date field](./img/date-field.png)
 
 ## Available options
 
