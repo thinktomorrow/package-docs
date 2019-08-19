@@ -90,7 +90,7 @@ class ChiefProjectServiceProvider extends BaseChiefProjectServiceProvider
         parent::boot();
 
         // Example of registering event pages
-        $this->registerPage(PageManager::class, \App\Events\Event::class);
+        $this->registerPage(PageManager::class, Article::class);
     }
 }
 ```

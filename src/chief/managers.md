@@ -65,3 +65,19 @@ public function details(): Details
     return parent::details();
 }
 ```
+
+### Authorization
+
+To prevent or allow certain roles to do CRUD on this model you can implement the 'can()' function.
+
+```php
+public function can($verb): bool
+{
+    // Do not allow creation
+    if($verb == 'create' && !chiefAdmin()->hasRole('developer')) return false;
+
+    return parent::can($verb);
+}
+```
+
+The default verbs are 'create', 'store', 'edit', 'update', 'delete', 'upload'. 
