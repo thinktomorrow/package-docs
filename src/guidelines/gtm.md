@@ -2,6 +2,22 @@
 
 We use GTM to implement tags or analytics tracking without needing to change the code every time.
 
+## Basic setup
+
+You can use a gist for the basic GTM container setup or if you want to set up the container yourself start [here](#getting-started).
+
+To get started with the gist download the .json here: [https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7](https://gist.github.com/yinx/8d161ee56e786f983fd5eabcb3b199b7)
+
+Create a new container/account in GTM first.
+Then go to Admin in the top left and select import container.
+This is where you upload the .json.
+
+You can create a new workspace or import it in the current workspace.
+
+Now the only thing to do is to set your analytics id in the 'Google analytics id' variable.
+
+And you're ready to start tracking the basics with Google Analytics
+
 ## Getting started
 
 To get started with Tag manager go to [https://tagmanager.google.com/](https://tagmanager.google.com/) 
