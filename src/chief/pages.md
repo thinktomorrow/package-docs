@@ -220,9 +220,6 @@ If you wanted to create the faq's with questions and answers the manager could l
 ```php
 class FaqManager extends PageManager
 {
-    public $labelSingular = 'Faq';
-    public $labelPlural   = 'Faqs';
-
     public function fields(): Fields
     {
         return parent::fields()->add(

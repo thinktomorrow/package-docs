@@ -1,4 +1,31 @@
-# Advanced Page Management
+# Advanced guide
+
+## Strict mode
+When chief is in strict mode, it highlights potential errors and warnings in your application.
+Strict mode is enabled by default in development mode. In production builds this has no effect.
+
+You can disable / enable strict mode in the chief config:
+```php
+# config/thinktomorrow/chief.php
+
+'strict' => env('APP_DEBUG', false),
+```
+
+# Advanced Model Management
+
+## Localization
+## Tweaking the admin form
+## Custom routes (e.g. publish/archive)
+
+## Model views
+Implement the `ViewableContract` if the model should be rendered on the site.
+Implement the `ProvidesUrl` contract if the model needs to be accessed directly via an url.
+
+## Model fields
+
+## Authorization & authentication
+Note that Chief has separate tables for the chief admin users, `chief-users` and `chief_password_resets`. This way there is no interference with your application user logic.
+
 
 ## Grouping pages in the pagebuilder
 
@@ -163,3 +190,9 @@ class LocaleFilter extends SelectFilter
     }
 }
 ```
+
+### Custom chief pages
+
+Any page can be added as a nav item in chief by added them to the nav-main.blade.php that you override in your project.
+
+One thing to keep in mind while defining the routes is to add the web, web-chief and auth:chief middleware to your routes to make sure all the authorization works correctly.

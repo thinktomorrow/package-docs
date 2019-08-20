@@ -19,7 +19,7 @@ module.exports = {
             { 
                 text: 'Projects', 
                 items: [
-                    { text: 'Chief', link: '/src/chief/initial_setup' },
+                    { text: 'Chief', link: '/src/chief/installation' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/guide/installation' },
                     { text: 'Squanto', link: '/src/squanto/' },
                     { text: 'Locale', link: '/src/locale/' },
