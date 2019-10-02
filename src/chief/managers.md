@@ -81,3 +81,23 @@ public function can($verb): bool
 ```
 
 The default verbs are 'create', 'store', 'edit', 'update', 'delete', 'upload'. 
+
+### Pagination a manager in the admin panel
+
+Pagination in the admin panel can be activated on each manager.
+To add pagination set a property $paginated to true and set $pageCount to the amount of items on a page.
+
+```php
+# AuthorManager.php
+
+<?php
+
+use Thinktomorrow\Chief\Management\Manager;
+use Thinktomorrow\Chief\Management\AbstractManager;
+
+class AuthorManager extends AbstractManager implements Manager
+{
+    protected $paginated = true;
+    protected $pageCount = 10;
+}
+```
