@@ -184,3 +184,8 @@ This change is needed to include any optional assistant added fields as well.
 ### Homepage
 
 Due to the changes in url management you should make sure one of your pages has '/' as its url to identify it as the homepage.
+
+## Upgrading from 0.3.* to 0.4.*
+
+The biggest change and the one most likely to affect your project is the Assetlibrary update to 0.6 .
+Follow the assetlibrary upgrade documentation for this change. [Assetlibrary Documentation](../assetlibrary/0.6/upgrading.md)

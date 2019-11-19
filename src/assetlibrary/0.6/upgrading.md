@@ -9,6 +9,11 @@ The following files have been moved:
 - Assettrait moved from Traits folder to root
 - Assetuploader moved to Application folder
 
+Since the asset model has changed location the entity types in the database need to be changed as well. A migration has been prepared for this.
+
+```php
+php artisan migrate
+```
 
 ### Api changes
 
