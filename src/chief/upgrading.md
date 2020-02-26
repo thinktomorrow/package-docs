@@ -126,12 +126,12 @@ You should remove the declaration of these fields on the manager to their respec
 
 ### Removals
 
-## Routes
+#### Routes
 The chief routes or now autoloaded so you can safely remove the chief routes in your project and the controller linked to these.
 If you need to keep your own routing in place, make sure to set the chief setting `thinktomorrow.chief.route.autoload` to `false` so it will no longer autoload
 this route.
 
-## Classes
+#### Classes
 The following classes are removed or haved changed location:
 - Interface `Thinktomorrow\Chief\Relations\PresentForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\ViewableContract`.
 - Trait `Thinktomorrow\Chief\Relations\PresentingForParent` can be replaced with `Thinktomorrow\Chief\Concerns\Viewable\Viewable`.
@@ -189,3 +189,83 @@ Due to the changes in url management you should make sure one of your pages has 
 
 The biggest change and the one most likely to affect your project is the Assetlibrary update to 0.6 .
 Follow the assetlibrary upgrade documentation for this change. [Assetlibrary Documentation](../assetlibrary/0.6/upgrading.md)
+
+
+## Upgrading from 0.4.6 to 0.4.7
+0.4.7 introduces a new states logic for pages as well as a new api for Fields. 
+There are a couple of breaking changes in this upgrade. If you've done some advanced customisation, you're probably fine upgrading without too much hassle.
+
+Please visit the [changelog](https://github.com/thinktomorrow/chief/releases/tag/0.4.7) for a list of all the major changes in this version.
+
+### Installation
+Set your composer package constraint to `thinktomorrow/chief: ^0.4.7`. Run `composer update thinktomorrow/chief` command to get to the latest 0.4.* version.
+
+If during the install any errors occur regarding files not existing please refer to the following sections, change the affected classes
+and run `composer update` again.
+
+Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root.
+Note that with the force flag you'll update all existing chief style and script assets in your project.
+
+### Database
+We first advice you to take a backup of the database to keep a reference of the existing setup. 
+Next run `php artisan migrate` to execute the database migrations. This will convert the old states to the new states setup in the database.
+Note that this is only done for the _pages_ table. If your project has other tables containing old state logic, you'll need to do the same migration. In this case, you can create
+a new migration in your project based on `vendor/thinktomorrow/chief/database/migrations/2019_09_01_163503_add_page_states.php`.
+
+### Pagestate
+Custom models that make use of the page states such as _published_, _draft_ or _archived_, now need to implement the `Thinktomorrow\Chief\States\State\StatefulContract.php`.
+This contract expects two methods `stateOf(string $key)` and `changeStateOf(string $key, $state)`. As an example, the basic implementation for pages is this:
+```php 
+public function stateOf($key): string
+{
+    return $this->$key;
+}
+
+public function changeStateOf($key, $state)
+{
+    if ($state === $this->stateOf($key)) {
+        return;
+    }
+
+    PageState::assertNewState($this, $key, $state);
+
+    $this->$key = $state;
+}
+```
+
+### Manager model
+The property model is no longer encouraged to use inside the manager. Please use the `existingModel()` method to retrieve it. 
+If you want to retrieve the 
+To verify that an existing model is available to the manager, you can use the `Manager::hasExistingModel()` method.
+If you have custom details - to show custom admin cards or page headers -, you might need to check for the models' existence first. An example from the PageManager can help you on your way:
+```php 
+public function details(): Details
+{
+    // Show details in case the model exists
+    if ($this->hasExistingModel()) {
+        return parent::details()
+            ->set('title', $this->existingModel()->title ? ucfirst($this->existingModel()->title) : '')
+            ->set('context', '');
+    }
+
+    // Show details in case no model exists yet - e.g. on create page.
+    return parent::details();
+}
+```
+
+### Mediafield
+`Thinktomorrow\Chief\Fields\MediaField` is now an abstract class and no longer directly available. Replace its usage with `Thinktomorrow\Chief\Fields\ImageField` instead. This naming better reflects the image only aspect of this formfield.
+
+`Thinktomorrow\Chief\Fields\DocumentField` is removed. Replace its usage with `Thinktomorrow\Chief\Fields\FileField` instead, which has the same behavior. It better reflects its nature because also images are allowed here.
+
+### Other changes and removals
+- Changed: File `Thinktomorrow\Chief\Concerns\Publishable\Publishable` is moved to `Thinktomorrow\Chief\States\Publishable\Publishable`
+- Changed: File `Thinktomorrow\Chief\Concerns\Archivable\Archivable` is moved to `Thinktomorrow\Chief\States\Archivable\Archivable`
+- Changed: `Field::multiple()` is only used to set the multiple state. To retrieve this value, it is replaced by `Field::allowMultiple()`.
+- Removed: `Manager::model()`. You should either use `Manager::modelInstance()` for an empty generic model instance or `Manager::existingModel()` to retrieve the model record.
+- Removed: `Publishable::sortedByPublished` is removed since it has no effect in sorting by published date.
+- Removed: `Field::getFieldValue()`. Use the new `Field::getValue(Model $model = null, ?string $locale = null)` method instead.
+- Removed: `Field::key()` is now only used to set a custom key.  To retrieve the key use the `Field::getKey()` method.
+- Removed: `Field::name()` is now only used to set a custom name.  To retrieve the name use the `Field::getName()` method.
+- Removed: `Field::column()` is now only used to set a custom column.  To retrieve the column use the `Field::getColumn()` method.
+- Removed: `Field::default()` method is removed. From now on, use `Field::value(string $value)` to set the default value.
