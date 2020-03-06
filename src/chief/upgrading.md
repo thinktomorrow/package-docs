@@ -193,21 +193,20 @@ Follow the assetlibrary upgrade documentation for this change. [Assetlibrary Doc
 
 ## Upgrading from 0.4.6 to 0.4.7
 0.4.7 introduces a new states logic for pages as well as a new api for Fields. 
-There are a couple of breaking changes in this upgrade. If you've done some advanced customisation, you're probably fine upgrading without too much hassle.
+There are a couple of breaking changes in this upgrade. If you haven't done too much advanced customisation, you're probably fine upgrading without too much hassle.
 
 Please visit the [changelog](https://github.com/thinktomorrow/chief/releases/tag/0.4.7) for a list of all the major changes in this version.
 
 ### Installation
 Set your composer package constraint to `thinktomorrow/chief: ^0.4.7`. Run `composer update thinktomorrow/chief` command to get to the latest 0.4.* version.
 
-If during the install any errors occur regarding files not existing please refer to the following sections, change the affected classes
-and run `composer update` again.
+If during the installation any errors occur regarding non existing classes or files, we recommend to first follow the upgrade guide below and afterwards try to run `composer update` again.
 
 Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root.
 Note that with the force flag you'll update all existing chief style and script assets in your project.
 
 ### Database
-We first advice you to take a backup of the database to keep a reference of the existing setup. 
+First, we advice you to take a backup of the database prior to this migration.
 Next run `php artisan migrate` to execute the database migrations. This will convert the old states to the new states setup in the database.
 Note that this is only done for the _pages_ table. If your project has other tables containing old state logic, you'll need to do the same migration. In this case, you can create
 a new migration in your project based on `vendor/thinktomorrow/chief/database/migrations/2019_09_01_163503_add_page_states.php`.
@@ -234,10 +233,9 @@ public function changeStateOf($key, $state)
 ```
 
 ### Manager model
-The property model is no longer encouraged to use inside the manager. Please use the `existingModel()` method to retrieve it. 
-If you want to retrieve the 
-To verify that an existing model is available to the manager, you can use the `Manager::hasExistingModel()` method.
-If you have custom details - to show custom admin cards or page headers -, you might need to check for the models' existence first. An example from the PageManager can help you on your way:
+The manager property _model_ is no longer encouraged to be used. Use the `existingModel()` method to retrieve the model or `Manager::modelInstance()` for an empty generic model instance.
+To check that an existing model is available, you can use the `Manager::hasExistingModel()` method.
+If you have custom manager details - to show custom admin cards or page headers -, you might need to check for the models' existence first. An example from the PageManager can help you on your way:
 ```php 
 public function details(): Details
 {
@@ -254,7 +252,7 @@ public function details(): Details
 ```
 
 ### Mediafield
-`Thinktomorrow\Chief\Fields\MediaField` is now an abstract class and no longer directly available. Replace its usage with `Thinktomorrow\Chief\Fields\ImageField` instead. This naming better reflects the image only aspect of this formfield.
+`Thinktomorrow\Chief\Fields\MediaField` is now an abstract class and no longer available as a field. Replace its usage with `Thinktomorrow\Chief\Fields\ImageField` instead. This naming better reflects the image only aspect of this formfield.
 
 `Thinktomorrow\Chief\Fields\DocumentField` is removed. Replace its usage with `Thinktomorrow\Chief\Fields\FileField` instead, which has the same behavior. It better reflects its nature because also images are allowed here.
 
