@@ -256,6 +256,19 @@ public function details(): Details
 
 `Thinktomorrow\Chief\Fields\DocumentField` is removed. Replace its usage with `Thinktomorrow\Chief\Fields\FileField` instead, which has the same behavior. It better reflects its nature because also images are allowed here.
 
+### Redactor image upload
+The redactor image upload now expects a payload of base64 encoded data urls. This allows for faster uploads via the wysiwyg editor.
+There is a `chiefRedactorImageUpload` function provided to be used in the redactor editor script file. You'll need to update your projects' editor settings.
+Implementation looks like this:
+```js
+// resources/views/vendor/chief/back/_layouts/_editors/redactor/editor.blade.php
+ $R.options = {
+    @if(isset($imageUploadUrl) && (!isset($disableImageUpload) || !$disableImageUpload))
+        imageUpload: chiefRedactorImageUpload('{{ $imageUploadUrl }}'),
+    @endif
+ }
+```
+
 ### Other changes and removals
 - Changed: File `Thinktomorrow\Chief\Concerns\Publishable\Publishable` is moved to `Thinktomorrow\Chief\States\Publishable\Publishable`
 - Changed: File `Thinktomorrow\Chief\Concerns\Archivable\Archivable` is moved to `Thinktomorrow\Chief\States\Archivable\Archivable`
