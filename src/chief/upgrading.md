@@ -200,7 +200,7 @@ Please visit the [changelog](https://github.com/thinktomorrow/chief/releases/tag
 ### Installation
 Set your composer package constraint to `thinktomorrow/chief: ^0.4.7`. Run `composer update thinktomorrow/chief` command to get to the latest 0.4.* version.
 
-If during the installation any errors occur regarding non existing classes or files, we recommend to first follow the upgrade guide below and afterwards try to run `composer update` again.
+If during the installation any errors occur regarding non existing classes or files, we recommend to first follow the [upgrade guide](#upgrading-from-0-4-6-to-0-4-7) below and afterwards try to run `composer update` again.
 
 Next update the chief assets by running `php artisan vendor:publish --tag=chief-assets --force` in your project root.
 Note that with the force flag you'll update all existing chief style and script assets in your project.
