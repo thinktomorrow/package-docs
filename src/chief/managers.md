@@ -101,3 +101,45 @@ class AuthorManager extends AbstractManager implements Manager
     protected $pageCount = 10;
 }
 ```
+
+## Dynamic attributes
+Usually a model's value corresponds to a database column. This is the default behavior. This is fine but can be cumbersome when you want to manage a lot of different values.
+Also when you don't know the amount of values beforehand, this can prove to be a challenge. With dynamic attributes, you'll be able to store and manage values on the model without migrations.
+All values are stored as a json value on the database level, and transposed to a `Thinktomorrow\Chief\DynamicAttributes\DynamicAttributes` behind the scenes.
+
+### Setting up a dynamic model
+1. Add the trait `Thinktomorrow\Chief\DynamicAttributes\HasDynamicAttributes` to the eloquent model.
+2. Set a `$dynamicKeys` property on the model. This should be an array of all the attributes that the model exposes.
+3. You're good to go. Here's an example of such as setup:
+```php
+use Illuminate\Database\Eloquent\Model;
+use Thinktomorrow\Chief\DynamicAttributes\HasDynamicAttributes;
+
+class ModelStub extends Model
+{
+    use HasDynamicAttributes;
+
+    // the attribute 'title' is available as dynamic value.
+    protected $dynamicKeys = ['title'];
+}
+```
+
+### Retrieving a dynamic attribute
+A dynamic attribute can be retrieved just like a first class property. Or you can choose to use the `dynamic()` method.
+```php
+// fetching dynamic attribute can be done just like another attribute.
+$model->title;
+
+// This is the same as calling the underlying dynamic() method:
+$model->dynamic('title');
+
+// If the attribute is localized, and you'd need to fetch a different locale, you can pass a second 'locale' parameter.
+$model->dynamic('title', 'en');
+```
+
+### When to choose for dynamic attributes
+- the column of value is not important for database indexing or search queries.
+- the columns are not always expected on each model entry or cannot be determined beforehand.
+- the values is not required to be constrainted or validated on a database level.
+
+In other cases, it is best to stick with separate database columns.
