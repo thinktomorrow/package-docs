@@ -11,6 +11,24 @@ You can disable / enable strict mode in the chief config:
 'strict' => env('APP_DEBUG', false),
 ```
 
+# Using extra logins besides chief
+
+To make sure the logins you add don't conflict with the chief login make sure you override the logout method on your logincontroller to only flush the password_hash instead of the whole session. Otherwise the logout will also log your user out of the chief admin.
+The logout method should look like this:
+
+```php
+# App/Http/Controllers/Auth/LoginController.php
+
+public function logout(Request $request)
+{
+    $this->guard()->logout();
+
+    $request->session()->forget('password_hash');
+
+    return $this->loggedOut($request) ?: redirect('/');
+}
+```
+
 # Advanced Model Management
 
 ## Localization

@@ -5,7 +5,7 @@ Out of the box you'll get page, url and menu management provided through a well-
 ## Requirements
 There are a few minimum requirements for chief to be installable:
 - php >= 7.2.0
-- Laravel framework >= 5.6.39.
+- Laravel framework >= 5.8.
 
 :::warning Potential vendor conflict
 Chief makes use of the `spatie/laravel-permission` package. This does expect only one permission based role system. So this will present a conflict if your project
