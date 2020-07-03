@@ -119,9 +119,6 @@ Extend our ChiefExceptionHandler in the `app/handler.php` file. This is because 
 This most likely means you have an outdated version of chief. Run 'composer update' to get the latest version.
 If this error persists you might have some middleware that's interfering with the login/session process.
 
-### I get the "Class web-chief does not exist" error. Help!
-Add the `AuthenticateChiefSession::class` middleware group to your `App\Http\Kernel.php` file.
-
 ### I get the 'Expected response code 250 but got code “530”, with message “530 5.7.1 Authentication required ”' error. Help!
 Please make sure your mail settings in your .env file are correct.
 
