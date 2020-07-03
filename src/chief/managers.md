@@ -46,7 +46,9 @@ So don't forget to create a column in your database for each field you add here.
 ### Index card
 
 The cards you see on the index for a page or module can also be customized on the manager.
-To do this implement the 'details()' function.
+To do this implement the 'details()' function. 
+
+How to customize the view file is explained here: [customize index view](./customizing_chief_admin.md#customizing-index-pages)
 
 ```php
 // src/Pages/CustomPageManager.php
@@ -54,11 +56,11 @@ To do this implement the 'details()' function.
 public function details(): Details
 {
     // For existing model
-    if ($this->model->id) {
+    if ($this->hasExistingModel()) {
         return parent::details()
-            ->set('title', ucfirst($this->model->title))
+            ->set('title', ucfirst($this->existingModel()->title))
             ->set('subtitle', 'subtitle')
-            ->set('intro', 'Updated on ' . $this->model->updated_at->format('d/m/Y H:i'))
+            ->set('intro', 'Updated on ' . $this->existingModel()->updated_at->format('d/m/Y H:i'))
             ->set('context', '<span class="inline-xs stack-s">' . $this->assistant('publish')->publicationStatusAsLabel() . '</span>');
     }
 

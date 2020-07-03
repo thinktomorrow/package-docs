@@ -32,8 +32,8 @@ class AuthorManager extends PageManager
 - [HtmlField](#htmlfield)
 - [SelectField](#selectfield)
 - [RadioField](#radiofield)
-- [MediaField](#mediafield)
-- [DocumentField](#documentfield)
+- [ImageField](#imagefield)
+- [FileField](#filefield)
 - [DateField](#datefield)
 
 ### InputField
@@ -103,30 +103,30 @@ RadioField::make('gender')
 
 ![radio field](./img/radio-field.png)
 
-### MediaField
+### ImageField
 
-The media field will render a dropzone for image uploads.
+The image field will render a dropzone for image uploads.
 It has the following extra options:
 
 - multiple: this is a true or false value to denote is you are allowed to make multiple selections
-
+- validation: These follow the working of standard chief validation rules. Possible validation rules are :required, mimetypes, dimensions, min, max
 
 ```php
-MediaField::make('banner')->multiple(false),
+ImageField::make('banner')->multiple(false),
 ```
 
 ![media field](./img/media-field.png)
 
-### DocumentField
+### FileField
 
-The document field will render a dropzone for file uploads.
+The file field will render a dropzone for file uploads.
 It has the following extra options:
 
 - multiple: this is a true or false value to denote is you are allowed to make multiple selections
-
+- validation: These follow the working of standard chief validation rules. Possible validation rules are :required, mimetypes, dimensions, min, max
 
 ```php
-DocumentField::make('CV')->multiple(true),
+FileField::make('CV')->multiple(true),
 ```
 
 ![document field](./img/document-field.png)

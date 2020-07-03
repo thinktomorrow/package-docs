@@ -6,6 +6,7 @@ module.exports = [
     ['basics', 'Basics'],
     ['managers', 'Customize Managers'],
     ['fields', 'Fields'],
+    ['customizing_chief_admin', 'Customizing the chief admin'],
     ['advanced', 'Advanced'],
     ['contributing', 'Contributing'],
 ]

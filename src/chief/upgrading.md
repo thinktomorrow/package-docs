@@ -1,9 +1,9 @@
 # Upgrading
 
 ## Releases
-The latest version of Chief is `0.3.*` which is the one being currently developed upon.
+The latest version of Chief is `0.5.*` which is the one being currently developed upon.
 Previous versions will no longer be maintained with the exception for security fixes and critical bugfixes.
-It is strongly recommended to upgrade to the latest `0.3` version.
+It is strongly recommended to upgrade to the latest `0.5` version.
 
 ## Versioning
 Chief follows the [semantic versioning](https://semver.org/) and we always try to maintain a backward compatible release cycle.
@@ -280,3 +280,46 @@ Implementation looks like this:
 - Removed: `Field::name()` is now only used to set a custom name.  To retrieve the name use the `Field::getName()` method.
 - Removed: `Field::column()` is now only used to set a custom column.  To retrieve the column use the `Field::getColumn()` method.
 - Removed: `Field::default()` method is removed. From now on, use `Field::value(string $value)` to set the default value.
+
+## Upgrading from 0.4.* to 0.5.*
+
+### Changes to preview mode
+
+A small improvement made to the preview mode functionality now requires you to include a view file in your master layout. This will add a small widget shown only to admins to indicate the preview mode and with a direct link to the edit page.
+
+```php
+@include('chief::front.admin-toast')
+```
+
+### Field changes
+
+Fields can now be tagged, this makes it easier to group them into tabs in the admin view files how you want them.
+If you override the fields in a manager you should tag the fields appropriatly.
+
+The default tags are 'general', 'url' and 'seo'.
+
+Tagging the appropriate field with these tags will ensure they are shown into the correct tabs.
+
+```php{7}
+InputField::make('seo_title')
+    ->translatable($this->model->availableLocales())
+    ->validation('max:66')
+    ->label('Zoekmachine titel')
+    ->description('Maximum 66 tekens')
+    ->withCharacterCount()
+    ->tag('seo'),
+```
+
+### Other changes and removals
+
+- Changed: Field::getValue(string $locale = null) no longer requires to be passed the model. It now only accepts one optional locale argument.
+- Changed: renamed Thinktomorrow\Chief\Management\Details\Sections to Thinktomorrow\Chief\Management\Details\DetailSections.
+- Changed: renamed Thinktomorrow\Chief\Management\Details\HasSections to Thinktomorrow\Chief\Management\Details\HasDetailSections.
+- Changed: Blade component alias chiefformgroup renamed to formgroup
+- Changed: Trying to retrieve a Fields offset e.g. $fields['title']), which doesn't exist, now results in an exception being thrown.
+- Changed: Field::default() sets the default value in case the model does not provide one. Field::value() forces the value.
+- Changed: baseUrlSegment method is no longer a static method and requires to be an instance method.
+- Changed: Moved the Healthmonitor classes to the src/System directory. You'll need to update your chief.php monitor entries.
+- Removed: ManagedModel::previewUrl(). Use the ManagedModel::url() instead.
+- Removed: the $manager instance is no longer available inside a field view. You can always pass this to the view via the Field::viewData() method.
+- Removed: Manager::fieldValue() and Manager::renderField() methods. A field is now responsible for rendering its content, not the manager.

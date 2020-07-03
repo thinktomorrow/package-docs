@@ -119,13 +119,6 @@ And following that to add them to a page, simple select them from the pagebuilde
 ## Using snippets
 
 
-# Advanced Model Management
-
-## Localization
-## Tweaking the admin form
-## Custom routes (e.g. publish/archive)
-
-
 ## Filters
 It is possible to add filtering on the admin index pages. Filters allow the administrator to query index results with custom behaviour.
 For example searching by title via a text input or selecting between published or drafted items. By default, there are no filters set on a manager. 
