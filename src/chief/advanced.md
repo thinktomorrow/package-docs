@@ -11,7 +11,7 @@ You can disable / enable strict mode in the chief config:
 'strict' => env('APP_DEBUG', false),
 ```
 
-# Using extra logins besides chief
+## Using extra logins besides chief
 
 To make sure the logins you add don't conflict with the chief login make sure you override the logout method on your logincontroller to only flush the password_hash instead of the whole session. Otherwise the logout will also log your user out of the chief admin.
 The logout method should look like this:
@@ -31,10 +31,6 @@ public function logout(Request $request)
 
 # Advanced Model Management
 
-## Localization
-## Tweaking the admin form
-## Custom routes (e.g. publish/archive)
-
 ## Model views
 Implement the `ViewableContract` if the model should be rendered on the site.
 Implement the `ProvidesUrl` contract if the model needs to be accessed directly via an url.
@@ -43,7 +39,6 @@ Implement the `ProvidesUrl` contract if the model needs to be accessed directly 
 
 ## Authorization & authentication
 Note that Chief has separate tables for the chief admin users, `chief-users` and `chief_password_resets`. This way there is no interference with your application user logic.
-
 
 ## Grouping pages in the pagebuilder
 
@@ -54,67 +49,6 @@ Now if we want to show 3 products on the homepage we can add those products in t
 that view will be used to render those items.
 
 To get this working properly make sure you filename is the same as the key you defined that page as in the Chief.php config file.
-
-## Using query sets
-
-A pageset is a collection of pages that can be added to a page as a module. 
-In addition to this a pageset allows you to define query scopes.
-This lets you filter the collection by published or other query scopes as you see fit.
-
-### Creating sets
-A set is a custom grouping of pages, modules or other models.
-
-To create a set for a page you make a file in the src/Sets folder.
-
-```php
-<?php
- namespace Thinktomorrow\Chief\Tests\Feature\PageSets;
- use Thinktomorrow\Chief\Pages\Page;
- use Thinktomorrow\Chief\Sets\Set;
-
- class DummyPageSetRepository
-{
-    public function all($limit = 100)
-    {
-        $pages = Page::limit($limit)->get();
-        return new Set($pages);
-    }
-} 
-```
-
-The next thing to do is to add a reference to this pageset in the chief.php config file.
-
-You need to define the pageset in the pagesets array so the admin-panel has knowledge of this new pageset.
-
-
-```php
-'pagesets' => [
-    'published' => [
-        'action' => PublishedPageSet::class.'@published',
-        'parameter' => [1],
-        'label'     => 'published pages'
-    ]
-]
-```
-
-There are a few things we can define here. For starters the required field is the action which defines the class. If no method is defined (@method), the name of the array is used.
-The parameter accepts an array with parameters for this method.
-If the label is defined this will be used as the name of this pageset in the adminpanel. If label is not defined the name of the array is used.
-
-### Customizing pagesets
-To customize how a pageset renders we can also customize the view that would be used.
-
-To create a view for this specific module, we create views/front/modules/published.blade.php in this case.
-The name of the view should be the same as the pageset type as defined in the chief config file.
-You can also put this file in a folder with the name of a page to define a view specificly for this page and pageset.
-
-In this view we have access to the following variables:
-- $pages and $parent for a set of pages.
-- $collection and $parent for a set of modules or models.
-
-### Using Pagesets
-Once this setup is done we can create instances of these pagesets from the admin panel.
-And following that to add them to a page, simple select them from the pagebuilder dropdown.
 
 ## Using snippets
 

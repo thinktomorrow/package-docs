@@ -105,21 +105,7 @@ Make sure to add this service provider to your `app.php` config file:
 Let's just use the default PageManager for now and link it to our newly created article model.
 
 Perfect! Now you have a collection of products that you can manage through the chief admin panel.
-But it will still use the default pages.show view to display these pages so let's use our own view for these articles.
-
-To use your own layout it's as easy as making a view file at 'pages.MANAGEDMODELKEY' so for our example of articles we would make the view
-pages/articles.blade.php.
-
-```html
-<!-- resources/views/pages/articles.blade.php -->
-
-<!DOCTYPE html>
-<html>
-<body>
-    {!! $model->renderChildren() !!}
-</body>
-</html>
-```
+But it will still use the default pages.show view to display these pages. Customizing this view will be explained in the [Templates](#templates) section.
 
 
 ## Modules
@@ -158,10 +144,160 @@ $this->registerModule(ModuleManager::class, Header::class);
 
 Let's just use the default ModuleManager for now and link it to our newly created header model.
 
-Perfect! Now you have a header module that you can manage through the chief admin panel.
-But it will still use the default modules.show view to display these modules so let's use our own view for these headers.
+Then to make sure we can add the modules in the pagebuilder we add it in the relations.children array in the `config/chief.php`.
 
-To use your own layout it's as easy as making a view file at 'modules.MANAGEDMODELKEY' so for our example of articles we would make the view
+```php
+'relations'   => [
+        'children' => [
+            src/Modules/Header::class,
+        ],
+    ],
+```
+
+Perfect! Now you have a header module that you can manage through the chief admin panel.
+But it will still use the default modules.show view to display these modules. Customizing this view will be explained in the [Templates](#templates) section.
+
+## Using query sets
+
+A pageset is a collection of pages that can be added to a page as a module. 
+In addition to this a pageset allows you to define query scopes.
+This lets you filter the collection by published or other query scopes as you see fit.
+
+### Creating sets
+A set is a custom grouping of pages, modules or other models.
+
+To create a set for a page you make a file in the src/Sets folder.
+
+```php
+<?php
+ namespace Thinktomorrow\Chief\Tests\Feature\PageSets;
+ use Thinktomorrow\Chief\Pages\Page;
+ use Thinktomorrow\Chief\Sets\Set;
+
+ class DummyPageSetRepository
+{
+    public function all($limit = 100)
+    {
+        $pages = Page::limit($limit)->get();
+        return new Set($pages);
+    }
+} 
+```
+
+The next thing to do is to add a reference to this pageset in the chief.php config file.
+
+You need to define the pageset in the pagesets array so the admin-panel has knowledge of this new pageset.
+
+
+```php
+'pagesets' => [
+    'published' => [
+        'action' => PublishedPageSet::class.'@published',
+        'parameter' => [1],
+        'label'     => 'published pages'
+    ]
+]
+```
+
+There are a few things we can define here. For starters the required field is the action which defines the class. If no method is defined (@method), the name of the array is used.
+The parameter accepts an array with parameters for this method.
+If the label is defined this will be used as the name of this pageset in the adminpanel. If label is not defined the name of the array is used.
+
+### Customizing pagesets
+To customize how a pageset renders we can also customize the view that would be used.
+
+To create a view for this specific module, we create views/front/modules/published.blade.php in this case.
+The name of the view should be the same as the pageset type as defined in the chief config file.
+You can also put this file in a folder with the name of a page to define a view specificly for this page and pageset.
+
+In this view we have access to the following variables:
+- $pages and $parent for a set of pages.
+- $collection and $parent for a set of modules or models.
+
+### Using Pagesets
+Once this setup is done we can create instances of these pagesets from the admin panel.
+And following that to add them to a page, simple select them from the pagebuilder dropdown.
+
+## Menus
+
+Chief allows you to define multiple menus and manage them seperatly.
+
+### Creating a menu
+
+To add a menu to chief we define one in the chief config file.
+
+```php
+# Config\chief.php
+
+'menus' => [
+        'main' => [
+            'label' => 'Main navigation',
+            'view'  => 'front.menus.main'
+        ],
+        'footer' => [
+            'label' => 'Footer navigation',
+            'view'  => 'front.menus.footer'
+        ]
+    ],
+```
+
+Define the name of the menu and a label and the corresponding view file.
+
+### Using the menu
+
+To start using the menus you have defined you can use the following handler to define where to render the menu.
+
+```php
+{!! chiefmenu('main')->render() !!}
+```
+Next to access the menu in the defined view file.
+
+```php
+@foreach(\Thinktomorrow\Chief\Menu\ChiefMenu::fromMenuItems('main')->items() as $item)
+    <li><a href="{{ $item->url }}">{{ $item->label }}</a></li>
+@endforeach
+```
+On the menu items you have access to the url and label of the item.
+
+To find out if the current item has any sub items associated with it use the haschildren check.
+And then loop over the children to get each child. Deeper levels may be available depending on how your menu is set up.
+
+```php
+@if($item->hasChildren())
+    @foreach($item->children() as $child)
+        <a href="{{ $child->url }}" class="block text-secondary small-caps">{{ $child->label }}</a>
+    @endforeach
+@endif
+```
+
+### Creating menu items
+
+Now you can go ahead and use the admin panel to manage the menu items for the menus you have defined and set up.
+
+## Templates
+
+Templates in this context means the view that will be used to render this model. By default the 'pages.show', 'modules.show' and 'sets.show' views are used to render the respective types of models.
+Let's get into how we can define a view that should be used for rendering per model.
+
+### Page model templates
+
+To use your own layout for a page it's as easy as making a view file at 'pages.MANAGEDMODELKEY' so for our example of articles we would make the view
+pages/articles.blade.php.
+
+```html
+<!-- resources/views/pages/articles.blade.php -->
+
+<!DOCTYPE html>
+<html>
+<body>
+    {!! $model->renderChildren() !!}
+</body>
+</html>
+```
+
+### Module templates
+
+To use your own layout for a model it's as easy as making a view file at 'modules.MANAGEDMODELKEY' so for our example of headers we would make the view
 modules/headers.blade.php.
 
 By default the available fields are `content` and `title`.
@@ -173,51 +309,9 @@ By default the available fields are `content` and `title`.
 {!! $module->title !!}
 ```
 
-Then to make sure we can add the modules in the pagebuilder we add it in the relations.children array in the `config/chief.php`.
-
-```php
-'relations'   => [
-        'children' => [
-            src/Modules/Header::class,
-        ],
-    ],
-```
-
-## Sets
-
-Now what if we want to add the latest 3 articles to our homepage? 
-We can accomplish this with a Set.
-
-A Set is basicly a subset of a collection that can be added in the pagebuilder.
-
-Defining a Set is done in `config/chief.php`.
-
-```php
-    'sets' => [
-        'recent-articles'   => [
-            'action'     => Article::class.'@getRecent',
-            'parameters' => [3],
-            'label'      => '3 most recent articles'
-        ],
-    ],
-```
-
-And then we define that function on the Article model. The parameters will be passed through to the function aswell.
-
-```php
-// src/Article.php
-
-public function getRecent($limit)
-{
-    return $this->orderBy('created_at', 'desc')->limit($limit)->get();
-}
-
-```
-
-And now we create a view to render this set. The name of this view is based on the key you define in the config.
-So this set we create the following view: `sets/recent-articles.blade.php`
-
-## Templates
+:::tip folders
+If you want to clean up you folder structure you always have the option to create a folder with the managemodelkey and create a 'show.blade.php' file. That file will then be used as the main rendered view for that model.
+:::
 
 ## Localization
 When coding in Europe, you'll probably need to provide your site in more than one language. Localization is built into the core of Chief.

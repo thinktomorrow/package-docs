@@ -109,13 +109,27 @@ The image field will render a dropzone for image uploads.
 It has the following extra options:
 
 - multiple: this is a true or false value to denote is you are allowed to make multiple selections
-- validation: These follow the working of standard chief validation rules. Possible validation rules are :required, mimetypes, dimensions, min, max
+- validation: These follow the working of standard chief validation rules. Possible validation rules are required, mimetypes, dimensions, min, max
 
 ```php
 ImageField::make('banner')->multiple(false),
 ```
 
 ![media field](./img/media-field.png)
+
+#### Retrieving uploaded images
+
+To retrieve the images that have been uploaded with an imagefield we use the Thinktomorrow/assetlibrary package.
+Each uploaded image will be converted to different sizes according to the assetlibrary config.
+To fetch these conversions pass the name to the url or filename function.
+For more information check out the [assetlibrary documentation](../assetlibrary/0.6/installation.md)
+
+```php
+$model->asset(Thinktomorrow\Chief\Media\MediaType::THUMB)->exists()
+$model->asset(Thinktomorrow\Chief\Media\MediaType::THUMB)->url()
+$model->asset(Thinktomorrow\Chief\Media\MediaType::THUMB)->filename()
+```
+
 
 ### FileField
 
@@ -172,8 +186,6 @@ InputField::make('title')->translatable(['en', 'nl'])
 ```
 
 ## Create a custom field
-## Field arrangements
-All fields are
 
 ## Page fields
 

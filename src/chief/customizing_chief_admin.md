@@ -110,9 +110,7 @@ If you need access to other data in this view you can pass this using the 'index
 ```php
 public function indexViewData(): array
 {
-    $nodeCollection = (new NodeCollectionFactory)->fromSource(new ArraySource(CatalogPage::all()->all()));
-
-    return ['nodeCollection' => $nodeCollection];
+    return ['catalogpages' =>  CatalogPage::all()];
 }
 ```
 
