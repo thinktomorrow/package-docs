@@ -80,7 +80,7 @@ class Article extends Page
 ```
 
 All links will now start with this segment baked in. Here's how it looks in the admin:
-![](./img/base-segment.png)
+![](img/base-segment.png)
 
 ### Using a custom route resolver
 By default the `route()` helper is used for resolving page routes. You can change the way you resolve this route by defining a Closure in the boot method of your `ChiefProjectServiceProvider`. 
@@ -230,4 +230,4 @@ class FaqManager extends PageManager
 }
 ```
 
-These fields have many more options and are explained in more detail in the [fields section](./models.md#fields).
+These fields have many more options and are explained in more detail in the [fields section](models.mdields).

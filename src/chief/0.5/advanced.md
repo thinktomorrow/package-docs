@@ -99,7 +99,7 @@ class SearchFilter extends InputFilter
 
 This will add a search field in the sidebar of your index like so:
 
-![Filter example](./img/filter-example.png)
+![Filter example](img/filter-example.png)
 
 Optionally you can add:
 a `label` property to set a custom label. By default the input name is used.

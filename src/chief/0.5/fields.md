@@ -45,7 +45,7 @@ It has no special options.
 InputField::make('name'),
 ```
 
-![input field](./img/input-field.png)
+![input field](img/input-field.png)
 
 ### TextField
 
@@ -56,7 +56,7 @@ It has no special options.
 TextField::make('name'),
 ```
 
-![text field](./img/text-field.png)
+![text field](img/text-field.png)
 
 ### HtmlField
 
@@ -67,7 +67,7 @@ It has no special options.
 HtmlField::make('name'),
 ```
 
-![html field](./img/html-field.png)
+![html field](img/html-field.png)
 
 ### SelectField
 
@@ -84,7 +84,7 @@ SelectField::make('countries')
             ->multiple(true),
 ```
 
-![select field](./img/select-field.png)
+![select field](img/select-field.png)
 
 ### RadioField
 
@@ -101,7 +101,7 @@ RadioField::make('gender')
             ->multiple(false),
 ```
 
-![radio field](./img/radio-field.png)
+![radio field](img/radio-field.png)
 
 ### ImageField
 
@@ -115,14 +115,14 @@ It has the following extra options:
 ImageField::make('banner')->multiple(false),
 ```
 
-![media field](./img/media-field.png)
+![media field](img/media-field.png)
 
 #### Retrieving uploaded images
 
 To retrieve the images that have been uploaded with an imagefield we use the Thinktomorrow/assetlibrary package.
 Each uploaded image will be converted to different sizes according to the assetlibrary config.
 To fetch these conversions pass the name to the url or filename function.
-For more information check out the [assetlibrary documentation](../assetlibrary/0.6/installation.md)
+For more information check out the [assetlibrary documentation](../../assetlibrary/0.6/installation.md)
 
 ```php
 $model->asset(Thinktomorrow\Chief\Media\MediaType::THUMB)->exists()
@@ -143,7 +143,7 @@ It has the following extra options:
 FileField::make('CV')->multiple(true),
 ```
 
-![document field](./img/document-field.png)
+![document field](img/document-field.png)
 
 ### DateField
 
@@ -158,7 +158,7 @@ DateField::make('birthdate'),
 To display this date correctly across all pages you need to define the field in the dates array on the model.
 :::
 
-![date field](./img/date-field.png)
+![date field](imgate-field.png)
 
 ## Available options
 

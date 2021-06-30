@@ -8,7 +8,7 @@ For instance if you want to add some fields to a module/collection or just want 
 To create a custom manager extend one of the following:
 - ModuleManager (Module)
 - PageManager (Page)
-- [AbstractManager](./advanced.md#advanced_model_management) (advanced)
+- [AbstractManager](advanced.md#advanced_model_management) (advanced)
 
 So let's create a custom manager and extend 'ModuleManager'.
 This all works the same when you're extending the 'PageManager'.
@@ -38,7 +38,7 @@ $this->registerModule(HeaderManager::class, Header::class);
 
 One thing you might want to do is add some managed fields.
 
-You can find all the possible fields [here](./fields.md).
+You can find all the possible fields [here](fields.md).
 
 One important thing to remember is the name you define in the 'make()' function also corresponds to the database entry for all fields except for the Asset fields(Media, Document).
 So don't forget to create a column in your database for each field you add here.
@@ -48,7 +48,7 @@ So don't forget to create a column in your database for each field you add here.
 The cards you see on the index for a page or module can also be customized on the manager.
 To do this implement the 'details()' function. 
 
-How to customize the view file is explained here: [customize index view](./customizing_chief_admin.md#customizing-index-pages)
+How to customize the view file is explained here: [customize index view](customizing_chief_admin.md#customizing-index-pages)
 
 ```php
 // src/Pages/CustomPageManager.php

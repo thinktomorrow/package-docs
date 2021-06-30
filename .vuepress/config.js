@@ -16,10 +16,11 @@ module.exports = {
         nav: [
             { text: 'Home', link: '/' },
             { text: 'Guidelines', link: '/src/guidelines/index' },
-            { 
-                text: 'Projects', 
+            {
+                text: 'Projects',
                 items: [
-                    { text: 'Chief', link: '/src/chief/installation' },
+                    { text: 'Chief 0.6', link: '/src/chief/latest/installation' },
+                    { text: 'Chief 0.5', link: '/src/chief/0.5/installation' },
                     { text: 'Assetlibrary', link: '/src/assetlibrary/0.6/installation' },
                     { text: 'Squanto', link: '/src/squanto/' },
                     { text: 'Locale', link: '/src/locale/' },
@@ -30,7 +31,8 @@ module.exports = {
         ],
         sidebar:
         {
-            '/src/chief/': require('./chief-nav.js'),
+            '/src/chief/latest/': require('./chief-nav-latest.js'),
+            '/src/chief/0.5/': require('./chief-nav-0.5.js'),
             '/src/assetlibrary/': require('./assetlibrary-nav.js'),
             '/src/squanto/': require('./squanto-nav.js'),
             '/src/locale/': require('./locale-nav.js'),

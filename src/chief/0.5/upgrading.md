@@ -188,7 +188,7 @@ Due to the changes in url management you should make sure one of your pages has 
 ## Upgrading from 0.3.* to 0.4.*
 
 The biggest change and the one most likely to affect your project is the Assetlibrary update to 0.6 .
-Follow the assetlibrary upgrade documentation for this change. [Assetlibrary Documentation](../assetlibrary/0.6/upgrading.md)
+Follow the assetlibrary upgrade documentation for this change. [Assetlibrary Documentation](../../assetlibrary/0.6/upgrading.md)
 
 
 ## Upgrading from 0.4.6 to 0.4.7

@@ -4,8 +4,8 @@ Out of the box you'll get page, url and menu management provided through a well-
 
 ## Requirements
 There are a few minimum requirements for chief to be installable:
-- php >= 7.2.0
-- Laravel framework >= 5.8.
+- php >= 7.4.0
+- Laravel framework >= 8.0
 
 :::warning Potential vendor conflict
 Chief makes use of the `spatie/laravel-permission` package. This does expect only one permission based role system. So this will present a conflict if your project
@@ -29,21 +29,21 @@ The package will automatically register its service provider but you'll need to 
 
 ### 1. Migrations
 
-After setting you database credentials run the migrate artisan command. This will automatically run the chief migrations as well.
+After setting your database credentials run the migrate artisan command. This will automatically run the chief migrations as well.
 ```php
 php artisan migrate
 ```
 
 
 ### 2. Exception handler
-Your app's exception handler should extend `Thinktomorrow\Chief\App\Exceptions\Handler` since it takes care of all chief authentication and authorization.
+Your app's exception handler should extend `Thinktomorrow\Chief\App\Exceptions\ChiefExceptionHandler`. It takes care of all chief admin authentication and authorization exceptions.
 
-In the `app/Exceptions/Handler.php` file extend the handler class as such:
+In the `app/Exceptions/Handler.php` file extend the handler class:
 
 ```php
 # app/Exceptions/Handler.php
 
-use Thinktomorrow\Chief\App\Exceptions\Handler as ChiefExceptionHandler;
+use Thinktomorrow\Chief\App\Exceptions\ChiefExceptionHandler;
 
 class Handler extends ChiefExceptionHandler
 {
@@ -108,7 +108,7 @@ php artisan chief:admin --dev
 Now that all this setup is done, let's go to the chief admin panel to get your first glance on the admin.
 Go to the `/admin` route and login with your newly created credentials to access the admin panel.
 
-The [basics section](./basics.md) of this guide will bring you up to speed on some of the important concepts to kickstart your project development.
+The [basics section](basics.md) of this guide will bring you up to speed on some of the important concepts to kickstart your project development.
 
 ## FAQ
 
